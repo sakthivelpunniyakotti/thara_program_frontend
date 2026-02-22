@@ -1,0 +1,38 @@
+/*********************************
+OPEN SANS FONT KIT
+*********************************/
+@font-face {
+  font-family: "opensans-light-webfont";
+  src: url('../fonts/OpenSans/opensans-light-webfont.eot');
+  src: url('../fonts/OpenSans/opensans-light-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/OpenSans/opensans-light-webfont.woff') format('woff'), url('../fonts/OpenSans/opensans-light-webfont.ttf') format('truetype'), url('../fonts/OpenSans/opensans-light-webfont.svg#ralewaythin') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "opensans-regular-webfont";
+  src: url('../fonts/OpenSans/opensans-regular-webfont.eot');
+  src: url('../fonts/OpenSans/opensans-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/OpenSans/opensans-regular-webfont.woff') format('woff'), url('../fonts/OpenSans/opensans-regular-webfont.ttf') format('truetype'), url('../fonts/OpenSans/opensans-regular-webfont.svg#ralewaythin') format('svg');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "opensans-semibold-webfont";
+  src: url('../fonts/OpenSans/opensans-semibold-webfont.eot');
+  src: url('../fonts/OpenSans/opensans-semibold-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/OpenSans/opensans-semibold-webfont.woff') format('woff'), url('../fonts/OpenSans/opensans-semibold-webfont.ttf') format('truetype'), url('../fonts/OpenSans/opensans-semibold-webfont.svg#ralewaythin') format('svg');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "opensans-bold-webfont";
+  src: url('../fonts/OpenSans/opensans-bold-webfont.eot');
+  src: url('../fonts/OpenSans/opensans-bold-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/OpenSans/opensans-bold-webfont.woff') format('woff'), url('../fonts/OpenSans/opensans-bold-webfont.ttf') format('truetype'), url('../fonts/OpenSans/opensans-bold-webfont.svg#ralewaythin') format('svg');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "opensans-extrabold-webfont";
+  src: url('../fonts/OpenSans/opensans-extrabold-webfont.eot');
+  src: url('../fonts/OpenSans/opensans-extrabold-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/OpenSans/opensans-extrabold-webfont.woff') format('woff'), url('../fonts/OpenSans/opensans-extrabold-webfont.ttf') format('truetype'), url('../fonts/OpenSans/opensans-extrabold-webfont.svg#ralewaythin') format('svg');
+  font-weight: 800;
+  font-style: normal;
+}

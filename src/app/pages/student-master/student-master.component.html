@@ -1,0 +1,59 @@
+<div class="d-flex">
+    <!-- sidebar -->
+     <app-sidebar></app-sidebar>
+     <!-- student -->
+      <div class="container w-100 bg-dark rounded c95-vh my-3">
+        <div class="row mb-1">
+            <div class="col">
+                <div class="header-tile bg-light border border-dark rounded d-flex align-item-center justify-content-between mt-3">
+                    <p class="h1 m-1">Student</p>
+                    <button class="btn btn-outline-dark m-2" (click)="addStudent()">New</button>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col">
+                <div class="filter-tile bg-light border border-dark rounded d-flex">
+                    <!-- grade filter -->
+                     <div class="round-border m-2 w-20">
+                        <app-multi-select [placeholder]="'Select Grade'"></app-multi-select>
+                     </div>
+                     <!-- subject filter -->
+                     <div class="round-border m-2 w-20">
+                        <app-multi-select [placeholder]="'Select Subject'"></app-multi-select>
+                     </div>
+                    <!-- input search -->
+                  <div class="rounder-border m-2 w-20">
+                    <input class="input-border" placeholder="Search..." type="text">
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col">
+                <div class="main-tile bg-light border border-dark rounded d-flex align-item-center justify-content-center">
+                    <!-- student list - table -->
+                      <table  style="width: 95%;">
+                        <tr>
+                            <th style="width: 100px;">Serial. No</th>
+                            <th>Name</th>
+                            <th>Grade</th>
+                            <th>Org</th>
+                            <th style="text-align: center;width: 100px;">Action</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Tom</td>
+                            <td>Sub Admin</td>
+                            <td>Thara</td>
+                            <td class="d-flex">
+                                <button class="btn btn-outline-dark p-1 m-1" (click)="edit()">Edit</button>
+                                <button class="btn btn-outline-dark p-1 m-1" (click)="delete()">Delete</button>
+                            </td>
+                        </tr>
+                      </table>
+                </div>
+            </div>
+        </div> 
+      </div>
+</div>

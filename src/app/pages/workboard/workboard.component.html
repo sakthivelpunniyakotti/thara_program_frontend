@@ -1,0 +1,41 @@
+<div class="d-flex">
+    <!-- sidebar -->
+     <app-sidebar></app-sidebar>
+     <!-- workboard -->
+    <div class="container w-100 bg-dark rounded c95-vh my-3">
+       <!-- header -->
+        <div class="row mb-1">
+            <div class="col">
+                <div class="header-tile bg-light border border-dark rounded d-flex align-item-center justify-content-between mt-3">
+                    <p class="h1 m-1">Workboard</p>
+                    <div class="bg-light border border-dark rounded d-flex justify-content-end align-item-center m-2 w-20">
+                        <select class="form-select">
+                            <option value="">Select</option>
+                            <option value="">1</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- main container -->
+        <div class="row mb-1 grid-container ">
+            @for(subject of subjects;track subject){
+             <div class="col">
+                 <div class="bg-light border border-dark rounded">
+                     <p class="h3 text-center">Lesson - 1</p>
+                 </div>
+             </div>
+            }
+        </div>
+        <!-- pagination -->
+         <div class="row mb-1">
+            <div class="col d-flex align-item-center justify-content-end">
+                <button class="btn btn-light"><img src="/assets/icons/caret-left.svg" alt=""></button>
+                 <button class="btn bg-light m-1">1</button>
+                 <button class="btn btn-light"><img src="/assets/icons/caret-right.svg" alt=""></button>
+            </div>
+         </div>
+        
+
+    </div>
+</div>

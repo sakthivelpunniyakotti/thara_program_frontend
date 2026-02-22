@@ -1,0 +1,240 @@
+/* You can add global styles to this file, and also import other style files */
+// xpense
+@use '@angular/material' as mat;
+@import "assets/stylesheet/variables";
+@import "assets/stylesheet/mixin";
+
+@include mat.core();
+
+.error{
+  border-color: red !important;
+}
+
+.not-allowed{
+  cursor: not-allowed;
+}
+/* snack style */
+
+.mat-mdc-snack-bar-container {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+
+  .mat-mdc-snackbar-surface {
+    border-radius: 60px !important;
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.2) !important;
+  }
+}
+
+.mat-mdc-snack-bar-container {
+  .mat-mdc-snackbar-surface {
+    max-width: 702px !important;
+  }
+}
+
+.snackbar-container {
+  position: fixed;
+  right: 15px !important;
+  top: 30px !important;
+  z-index: 999;
+  background: #fff;
+  border: solid 1px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+
+  &.success .mat-mdc-snackbar-surface {
+    background: #deffdd !important;
+    border-color: rgba(0, 0, 0, 0.3) !important;
+    color: #0e580b !important;
+    font-size: 12px !important;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+  }
+
+  &.info .mat-mdc-snackbar-surface {
+    background: #d0e8ff !important;
+    border-color: #7ab1e1 !important;
+    color: #1a4e8a !important;
+    font-size: 12px !important;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+  }
+
+  &.error .mat-mdc-snackbar-surface {
+    background: #ecc8c5 !important;
+    border-color: #bd8181 !important;
+    color: #b32f2d !important;
+    font-size: 12px !important;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+  }
+
+  &.warning .mat-mdc-snackbar-surface {
+    background: #f8f3d6 !important;
+    border-color: #d0cab4 !important;
+    color: #876c3d !important;
+    font-size: 12px !important;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+  }
+
+  .mat-mdc-snack-bar-actions button {
+    margin: 0;
+    padding: 0;
+    min-width: auto;
+    height: 30px;
+    width: 30px;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.9) !important;
+    font-size: 12px !important;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+    line-height: 1;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    .mdc-button__label {
+      top: -1px;
+    }
+  }
+
+  &.success .mat-mdc-snack-bar-actions button {
+    color: #0e580b !important;
+  }
+
+  &.warning .mat-mdc-snack-bar-actions button {
+    color: #876c3d !important;
+  }
+
+  &.error .mat-mdc-snack-bar-actions button {
+    color: #b32f2d !important;
+  }
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.c95-vh{
+  height: 95vh !important;
+}
+
+.cwid-15{
+  width: 25%;
+}
+
+// auto complete
+.cdk-overlay-pane {
+  // width: 250px !important;
+
+  .mat-mdc-autocomplete-panel {
+    border: solid 1px #c0c0c0;
+    background: #fff;
+    border-radius: 8px !important;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
+
+    .flightwrapper {
+      .mdc-list-item__primary-text {
+        width: 100%;
+        position: relative;
+        z-index: 1;
+      }
+
+      &::before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 0px;
+        background: $color-f1f1f1;
+        content: "";
+        border-radius: 0 40px 40px 0;
+        @include smooth-transition;
+        z-index: 0;
+      }
+
+      &:focus,
+      &:hover {
+        background: transparent;
+
+        &:before {
+          right: 0;
+          width: calc(100% + 20px);
+        }
+      }
+    }
+  }
+}
+
+.mat-mdc-form-field-subscript-wrapper,
+  .mdc-line-ripple {
+    display: none !important;
+  }
+
+
+.border-solid{
+  border-style: solid;
+  border-width: medium;
+  border-radius: 15px;
+}
+/* Chrome / Edge / Safari */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9a9a9a;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+.scroll-box {
+  border-radius: 10px;   /* makes edges rounded */
+  overflow: hidden;      /* REQUIRED */
+}
+
+.round-border{
+    border-radius: 50px;
+    border-style: solid;
+    border-width: medium;
+}
+
+.w-20{
+  width: 20%;
+}
+
+.input-border{
+  border-radius: 50px;
+  border-style: solid;
+  border-width: medium;
+  border-color: black;
+  padding-left: 13px;
+  color: black;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: black;   
+  opacity: 1;    
+  background-color: #f8f9fa;   
+}
+
+// table
+table, th, td {
+  border: 1px solid rgb(255, 255, 255);
+  border-collapse: collapse;
+}
+
+
+ 

@@ -1,0 +1,44 @@
+<div class="container bg-dark rounded border border-light p-1">
+<div class="modal-header d-flex align-item-center justify-content-between">
+  <h5 class="modal-title text-light ">{{title}}</h5>
+  <button type="button" class="btn btn-outline-light" (click)="hide()">X</button>
+</div>
+
+<div class="modal-body text-light">
+    <form [formGroup]="defaultForm">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                   <label class="form-label">Grade</label>
+                   <select formControlName="grade" class="form-select">
+                    <option value="">Select</option>
+                    <option value="">1</option>
+                    <option value="">2</option>
+                   </select>
+                   <label class="form-label">Subject</label>
+                   <select formControlName="subject" class="form-select">
+                    <option value="">Select</option>
+                    <option value="2">1</option>
+                    <option value="2">2</option>
+                    <option value="2">3</option>
+                   </select>
+                </div>
+                <div class="col"> 
+                    <label class="form-label">Count</label>
+                    <input type="text" placeholder="No" formControlName="count" class="form-control">
+                    <label class="form-label">Timer</label>
+                    <input type="text" placeholder="Sec" formControlName="timer" class="form-control">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer text-light">
+  <button class="btn btn-outline-light">Save</button>
+  <button class="btn btn-outline-light">Reset</button>
+  <button class="btn btn-outline-light" (click)="hide()">Close</button>
+</div>
+</div>
+
+

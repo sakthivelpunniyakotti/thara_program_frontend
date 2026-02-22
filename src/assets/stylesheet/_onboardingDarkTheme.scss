@@ -1,0 +1,65 @@
+
+.slider-container{
+
+    background: rgba(133,133,133,0.8);
+
+    .onboardingModal{
+        background: $grey-700;
+
+        .innerBox{
+            background: $grey-580; 
+            .curveStyle {background:$grey-700;
+                .curve{svg {path{fill:$grey-700}}}
+                .progressBar{
+                    .outerLine{background: rgba(255,255,255,0.3); height: 4px;
+                        .innerLine{height: 4px;}
+                    }
+                }
+            }    
+            .body{
+                h2,h3,h4,p{color: #fff;}
+                ul{
+                    li{
+                        a{
+                            background: $grey-700; border-color: $grey-500; color: #fff;
+                            &:focus, &:hover { background: $grey-600;color: #fff;}
+                            &.active{
+                                background: $grey-700; border-color: $color-F49622; color: #fff;
+                                &::after{border-color:#fff;}                                
+                            }
+                        }
+                    }
+                    &.nearAirport{
+                        &.weather{
+                            li{
+                                .infoIcon{
+                                    svg{path{fill:#fff}}
+                                }
+                            }
+                        }
+                    }
+                }
+                &.welcome{
+                    .content{
+                        h2,h3,h4,p{color: #fff;}
+                    }
+                }
+                .form-check{color: #fff;
+                    .form-check-input:checked{border-color: $color-F49622;}
+                }
+
+                .form_group{
+                    .form-label{color: #fff;}
+                    .inputBox{
+                        .form-control{background: $grey-700; border-color: $grey-500; color: #fff;}
+                    }
+                }
+            }        
+        }
+        .ellipseCurve{svg{path{fill:$grey-550;}}}
+        .foot{
+            &::after{background: rgba(255,255,255,0.1);}
+        }
+    }
+
+}

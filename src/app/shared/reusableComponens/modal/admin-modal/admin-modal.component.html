@@ -1,0 +1,60 @@
+@if(popUpType == 'add' || popUpType == 'edit' ){
+<div class="container bg-dark rounded border border-light p-1">
+<div class="modal-header d-flex align-item-center justify-content-between">
+  <h5 class="modal-title text-light ">{{title}}</h5>
+  <button type="button" class="btn btn-outline-light" (click)="hide()">X</button>
+</div>
+
+<div class="modal-body text-light">
+    <form [formGroup]="adminForm">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <label class="form-label">Name</label>
+                    <input class="form-control" type="text" placeholder="Enter Name" formControlName="name">
+                    <label class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Enter Password" formControlName="password">
+                        <button class="btn btn-outline-secondary"><i class="bi bi-eye-slash-fill"></i></button>
+                    </div>
+                    <label class="form-label">Confirm Password</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Confirm Password" formControlName="cPassword">
+                        <button class="btn btn-outline-secondary"><i class="bi bi-eye-slash"></i></button>
+                    </div>
+                </div>
+                <div class="col">
+                    <label class="form-label">Role</label>
+                    <select formControlName="role"  class="form-select" aria-label="Default select example">
+                        <option value="">Select Role</option>
+                        <option value="f">option 1</option>
+                        <option value="f">option 2</option>
+                    </select>
+                    <label class="form-label">Organisation</label>
+                    <input class="form-control" type="text" placeholder="Enter Org" formControlName="org">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer text-light">
+  <button *ngIf="popUpType == 'add'" class="btn btn-outline-light">Save</button>
+  <button *ngIf="popUpType == 'edit'" class="btn btn-outline-light">Update</button>
+  <button class="btn btn-outline-light" (click)="hide()">Close</button>
+</div>
+</div>
+}@else if(popUpType == 'delete'){
+<div class="container bg-dark rounded border border-light p-1">
+
+<div class="modal-body text-center text-light">
+  Are you sure you want to delete?
+</div>
+
+<div class="modal-footer d-flex align-item-center justify-content-around text-light">
+   <button class="btn btn-outline-light">Yes</button>
+  <button class="btn btn-outline-light" (click)="hide()">No</button>
+</div>
+</div>
+}
+

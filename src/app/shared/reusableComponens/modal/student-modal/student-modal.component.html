@@ -1,0 +1,57 @@
+@if(popUpType == 'add' || popUpType == 'edit' ){
+<div class="container bg-dark rounded border border-light p-1">
+<div class="modal-header d-flex align-item-center justify-content-between">
+  <h5 class="modal-title text-light ">{{title}}</h5>
+  <button type="button" class="btn btn-outline-light" (click)="hide()">X</button>
+</div>
+
+<div class="modal-body text-light">
+    <form [formGroup]="studentsForm">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <label class="form-label">Role</label>
+                    <input class="form-control not-allowed" readonly  type="text" formControlName="role">
+                    <label for="">Grade</label>
+                    <select formControlName="grade" class="form-select">
+                        <option value="">Select</option>
+                        <option value="option">option 1</option>
+                        <option value="option">option 2</option>
+                    </select> 
+                </div>
+                <div class="col">
+                    <label class="form-label" for="">Name</label>
+                    <input class="form-control" type="text" placeholder="Name" formControlName="name">
+                    <label for="">Skill</label>
+                    <select formControlName="skill" class="form-select">
+                        <option value="">Select</option>
+                        <option value="1">option - 1</option>
+                        <option value="3">option - 2</option>
+                    </select>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer text-light">
+  <button *ngIf="popUpType == 'add'" class="btn btn-outline-light">Save</button>
+  <button *ngIf="popUpType == 'edit'" class="btn btn-outline-light">Update</button>
+  <button class="btn btn-outline-light" (click)="hide()">Close</button>
+</div>
+</div>
+}@else if(popUpType == 'delete'){
+<div class="container bg-dark rounded border border-light p-1">
+
+<div class="modal-body text-center text-light">
+  Are you sure you want to delete?
+</div>
+
+<div class="modal-footer d-flex align-item-center justify-content-around text-light">
+   <button class="btn btn-outline-light">Yes</button>
+  <button class="btn btn-outline-light" (click)="hide()">No</button>
+</div>
+</div>
+}
+

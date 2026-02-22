@@ -1,0 +1,104 @@
+
+
+ <div class="d-flex">
+    <app-sidebar></app-sidebar>
+    <!-- admin main container -->
+    <div class="container w-100 bg-dark rounded c95-vh my-3">
+    <!-- header tile -->
+       <div class="header-tile bg-light w-100 rounded d-flex justify-content-between mt-3">
+         <p class="h1 m-0 ps-1 py-2">-----</p>
+         <div class="d-block"> 
+               <div class="container">
+                   <div class="row">
+                      <div class="col-3 d-flex align-item-center justify-content-center">
+                          <img class="my-1 me-1 border border-dark rounded-circle" src="/assets/sidebar/studentmaster.svg" alt="" srcset="">
+                      </div>
+                      <div class="col-9">
+                         <small class="d-block">User Name</small>
+                         <small class="d-block">Admin</small>
+                         <small class="d-block">Logout</small>
+                      </div>
+                   </div>
+               </div>
+         </div>
+    </div>
+    <!-- sibling tile  -->
+     <div class="sibling-tile">
+        <div class="rounded bg-light my-1">
+            <p class="h2">Primary</p>
+            <p class="h1">77</p>
+        </div>
+        <div class="rounded bg-light m-1">
+            <p class="h2">Secondary</p>
+            <p class="h1">77</p>
+        </div>
+        <div class="rounded bg-light my-1">
+            <p class="h2">Degree</p>
+            <p class="h1">88</p>
+        </div>
+     </div>
+     <!-- bottom tile -->
+      <div class="bottom-tile">
+        <div class="rounded bg-light">
+            <div class="search">
+                <div class="round-border m-2">
+                    <!-- search container -->
+                    <app-multi-select></app-multi-select>
+                </div>
+            </div>
+            <div class="list m-1 border-solid scroll-box">
+               <div class="profile-container d-flex">
+                  <div class="profile rounded-circle bg-secondary m-1 ">
+                     <p class="m-0">CR</p>
+                  </div>
+                  <div class="container">
+                    <div class="row">
+                        <div class="col">Name....</div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Details....
+                        </div>
+                    </div>
+                  </div>
+               </div>
+               <div class="profile-container d-flex">
+                  <div class="profile rounded-circle bg-secondary m-1 ">
+                     <p class="m-0">CR</p>
+                  </div>
+                  <div class="container">
+                    <div class="row">
+                        <div class="col">Name....</div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Details....
+                        </div>
+                    </div>
+                  </div>
+               </div>
+               <div class="profile-container d-flex">
+                  <div class="profile rounded-circle bg-secondary m-1 ">
+                     <p class="m-0">CR</p>
+                  </div>
+                  <div class="container">
+                    <div class="row">
+                        <div class="col">Name....</div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Details....
+                        </div>
+                    </div>
+                  </div>
+               </div>
+               
+             
+            </div>
+        </div>
+        <div class="rounded bg-light chart-container">
+           <highcharts-chart style="width: 95%; height: 100%;" [Highcharts]="Highcharts" [options]="chartOptions" ></highcharts-chart>
+        </div>
+      </div>
+    </div>
+ </div>

@@ -24,12 +24,22 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+               {
+               "glob": "**/*",
+               "input": "src/assets",
+               "output": "assets"
+  }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css"
+
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -92,5 +102,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "a14bcfb9-5fcf-4cff-8d25-80b00ce0e11b"
   }
 }

@@ -1,0 +1,17 @@
+<div class=" c95-vh my-3 ms-3 bg-dark rounded">
+    <div class="container d-flex align-item-center justify-content-start f-column">
+        <div class="row">
+            <ul>
+                @for(icon of icons;track icon){
+                        <div class="col my-3 fw-bold">
+                        <li><a style="text-decoration: none; color: white;" [routerLink]="['/'+icon.navigateUrl]">
+                            <img  class="rounded p-1 bg-light"  [src]="'/assets/sidebar/' + (icon.imgUrl)" alt="">
+                            {{icon.name}}
+                            </a>
+                        </li>    
+                    </div>
+                    }
+            </ul>
+        </div>
+    </div>
+</div>
