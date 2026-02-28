@@ -1,3 +1,4 @@
+@if(popUpType == 'add' || popUpType == 'edit') {
 <div class="container bg-dark rounded border border-light p-1">
 <div class="modal-header d-flex align-item-center justify-content-between">
   <h5 class="modal-title text-light ">{{title}}</h5>
@@ -5,11 +6,60 @@
 </div>
 
 <div class="modal-body text-light">
-  Modal content here
+  <div class="container">
+    <div class="row">
+      <form [formGroup]="configForm"> 
+        <div class="col">
+          @if (selectedValue != 'new') {
+          <label for="" class="form-label">Config type</label>
+          <select formControlName="configType" name="" (change)="selectValue($event)" class="form-select" id="">
+            <option value="">Select</option>
+            <option value="new">New</option>
+            @for(config of configData;track config) {
+              <option [value]="config?.configType">{{config?.configType | titlecase}}</option>
+
+            }
+          </select>
+        }
+          @if(selectedValue == 'new') {
+          <label for="" class="form-label">Config type</label>
+          <input formControlName="configType" type="text" placeholder="Enter the config type" class="form-control"> 
+          }
+        </div>
+        
+        <div class="col">
+          <label for="" class="form-label">Value</label>
+          <input formControlName="value" placeholder="Enter the value" type="text" class="form-control">
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <div class="modal-footer text-light">
+  @if(popUpType == 'add') {
+    <button class="btn btn-outline-light" [disabled]="configForm.invalid" (click)="postConfigData()">Save</button>
+  }
   <button class="btn btn-outline-light" (click)="hide()">Close</button>
+  @if(this.selectedValue == 'new') {
+    <button class="btn btn-outline-light" (click)="showDropdown()">Show Dropdown</button>
+  }
+  @if(popUpType == 'edit') {
+    <button class="btn btn-outline-light" (click)="updateConfig()">Update</button>
+  }
 </div>
 </div>
+} @else if(popUpType == 'delete'){
+<div class="container bg-dark rounded border border-light p-1">
+
+<div class="modal-body text-center text-light">
+  Are you sure you want to delete?
+</div>
+
+<div class="modal-footer d-flex align-item-center justify-content-around text-light">
+   <button class="btn btn-outline-light" (click)="delete()">Yes</button>
+  <button class="btn btn-outline-light" (click)="hide()">No</button>
+</div>
+</div>
+}
 

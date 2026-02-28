@@ -21,19 +21,7 @@ export class LoginComponent implements OnInit {
   loginAs: string = 'students'
   studentsForm!:FormGroup;
   othersForm!:FormGroup;
-
-  // need to replace with api
-   roles = [
-    {roleId: 'steak-0', role: 'Admin'},
-    {roleId: 'pizza-1', role: 'Counsellor'},
-    {roleId: 'tacos-2', role: 'Dev'}
-  ];
-   grades = [
-    {gradeId: 'steak-0', grade: 'Steak'},
-    {gradeId: 'pizza-1', grade: 'Pizza'},
-    {gradeId: 'tacos-2', grade: 'Tacos'}
-  ];
-
+   
   constructor(private commonService: CommonService,private router: Router, private loaderService: LoaderService){
     this.studentsForm = new FormGroup({
       userName : new FormControl('',Validators.required),
@@ -55,11 +43,13 @@ export class LoginComponent implements OnInit {
     
   }
 
+  grades:any;
   getGrade():any {
     this.loaderService.show();
     this.commonService.getGrade()
     .subscribe({
       next: (res) => {
+        this.grades = res?.responseBody;
         this.loaderService.hide();
       },
       error: (err:any) => {
@@ -68,11 +58,13 @@ export class LoginComponent implements OnInit {
     })
   }
 
+  roles:any;
   getRole():any{
     this.loaderService.show();
     this.commonService.getRole()
     .subscribe({
       next: (res) => {
+        this.roles = res?.responseBody;
         this.loaderService.hide();
       },
       error: (err: any) => {
@@ -96,14 +88,14 @@ export class LoginComponent implements OnInit {
         console.log(this.studentsForm.value,'students data');
         this.loginUserAsStudent();
         // testing
-        this.router.navigateByUrl('/dashboard');
+        // this.router.navigateByUrl('/dashboard');
         break;
 
       case 'others':
         console.log(this.othersForm.value,'others form data');
         this.loginUserAsOthers();
         // testing
-        this.router.navigateByUrl('/dashboard');
+        // this.router.navigateByUrl('/dashboard');
         break;
     }
   }
@@ -125,8 +117,8 @@ export class LoginComponent implements OnInit {
       },
       error:(err:any) => {
         this.loaderService.hide();
-        this.commonService.show('Login failed',TOAST_TYPES.ERROR);
-        console.log(err);
+        console.log(err,'error');
+        this.commonService.show(err?.error?.errorMsg?.errors[0]?.msg,TOAST_TYPES.ERROR);
       }
     })
   }
@@ -144,7 +136,7 @@ export class LoginComponent implements OnInit {
       },
       error:(err:any) => {
         this.loaderService.hide();
-        this.commonService.show('Login failed',TOAST_TYPES.ERROR);
+        this.commonService.show(err?.error?.errorMsg?.errors[0]?.msg,TOAST_TYPES.ERROR);
         console.log(err);
       }
     })

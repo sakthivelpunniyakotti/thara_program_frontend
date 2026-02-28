@@ -30,7 +30,7 @@
                                 <select class="form-select" aria-label="Default select example" [ngClass]="{error:studentsForm.get('grade')?.invalid && studentsForm.get('grade')?.touched}" formControlName="grade">
                                     <option value="" >Select Grade</option>
                                     @for(grade of grades;track grade){
-                                        <option [value]="grade.grade">{{grade.grade}}</option>
+                                        <option [value]="grade.value">{{grade.value}}</option>
                                     }
                                 </select>
                             </form>
@@ -52,7 +52,7 @@
                                  <select class="form-select" aria-label="Default select example" [ngClass]="{error:othersForm.get('role')?.invalid && othersForm.get('role')?.touched}" formControlName="role">
                                         <option value="">Select Role</option>
                                     @for(role of roles;track role){
-                                        <option [value]="role.role">{{role.role}}</option>
+                                        <option [value]="role.value">{{role.value | titlecase}}</option>
                                     }
                                  </select>
                             </form>

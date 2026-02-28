@@ -1,0 +1,71 @@
+<div class="d-flex">
+    <!-- side bar -->
+     <app-sidebar></app-sidebar>
+     <!-- dev -->
+      <div class="container w-100 bg-dark rounded c95-vh my-3">
+        <div class="row mb-1">
+            <div class="col">
+                <div class="header-tile bg-light border border-dark rounded d-flex align-item-center justify-content-between mt-3">
+                    <p class="h1 m-1">Config</p>
+                    <button class="btn btn-outline-dark m-2" (click)="addLabel()">Config</button>
+                </div>
+            </div>
+        </div>   
+        <div class="row mb-1">
+            <div class="col">
+                <div class="filter-tile bg-light border border-dark rounded d-flex">
+                  <div class="rounder-border m-2 w-20 input-group">
+                    <input class="input-border"  [(ngModel)]="searchKey" placeholder="Search" type="text">
+                    <button class="btn btn-outline-dark" (click)="search()">Filter</button>
+                  </div>
+                  <div class="rounder-border m-2 w-20">
+                     <select [(ngModel)]="filterType" name="" class="form-select border-black" id="">
+                        <option value="">select</option>
+                        <option value="all">All</option>
+                        @for(filter of filterData;track filter) {
+                            <option [value]="filter?.configType">{{filter?.configType | titlecase}}</option>
+                        }
+                     </select>
+                  </div>
+                  <div>
+                     <button class="btn btn-outline-dark m-2" (click)="filterTable()">Show List</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col">
+                <div class="main-tile bg-light border border-dark rounded d-flex align-item-center justify-content-center">
+                    <!-- admin list - table -->
+                     @if(configTableData?.lenght > 0) {
+                      <table  style="width: 95%;">
+                          <tr>
+                              <th style="width: 100px;">Serial. No</th>
+                              <th>Configured By</th>
+                              <th>Configured Value</th>
+                              <th>Value</th>
+                              <th>Created Date</th>
+                              <th style="text-align: center;width: 100px;">Action</th>
+                            </tr>
+                            @for( config of configTableData; track config; let i=$index) {          
+                                <tr>
+                                    <td>{{i+serialNo}}</td>
+                                    <td>{{config?.configBy | titlecase}}</td>
+                                    <td>{{config?.configType | titlecase}}</td>
+                                    <td>{{config?.value | titlecase}}</td>
+                                    <td>{{config?.createdDate | date: 'shortDate'}}</td>
+                                    <td class="d-flex">
+                                        <button class="btn btn-outline-dark p-1 m-1" (click)="edit(config)">Edit</button>
+                                        <button class="btn btn-outline-dark p-1 m-1" (click)="delete(config)">Delete</button>
+                                    </td>
+                                </tr>
+                            }
+                      </table>
+                    } @else {
+                        No Data Found
+                    }
+                </div>
+            </div>
+        </div>          
+      </div>
+</div>

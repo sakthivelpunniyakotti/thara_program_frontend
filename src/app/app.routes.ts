@@ -29,5 +29,9 @@ export const routes: Routes = [
     {
         path: 'task-manager',
         loadComponent: () => import('./pages/task-manager/task-manager.component').then((m)=>m.TaskManagerComponent)
+    },
+    {
+        path: 'config',
+        loadComponent: () => import('./pages/config/config.component').then((m)=>m.ConfigComponent)
     }
 ];
