@@ -110,10 +110,15 @@ getConfigList() {
       data: {}
     }
 
-    this.bsmodel.show(ModalComponent,{
+   const modelRef = this.bsmodel.show(ModalComponent,{
       initialState,
       class: MODALCSS.CENTER
     })
+
+    modelRef.onHidden?.subscribe(() => {
+      this.getConfigList();
+    })
+
   }
 
   delete(config: any){

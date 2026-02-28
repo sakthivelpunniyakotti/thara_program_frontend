@@ -1,33 +1,117 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { CommonService } from '../../../../core/service/common.service';
+import { LoaderService } from '../../../../core/service/loader.service';
+import { TaskService } from '../../../../core/service/task.service';
+import { TOAST_TYPES } from '../../enums/toastType';
 
 @Component({
   selector: 'app-task-modal',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule
+  ],
   templateUrl: './task-modal.component.html',
   styleUrl: './task-modal.component.css'
 })
-export class TaskModalComponent {
+export class TaskModalComponent implements OnInit{
   title: string = '';
   popUpType: string = '';
 
   taskForm!:FormGroup
 
-  constructor(private modelRef: BsModalRef){
+  constructor(
+    private modelRef: BsModalRef,
+    private commonService: CommonService,
+    private loaderService: LoaderService,
+    private taskService: TaskService
+  ){
     this.taskForm = new FormGroup({
-      subject: new FormControl(''),
-      grade: new FormControl(''),
-      count: new FormControl(),
-      word: new FormControl(),
-      timer: new FormControl(),
-      meaning: new FormControl()
+      subject: new FormControl('',Validators.required),
+      grade: new FormControl('',Validators.required),
+      count: new FormControl('',Validators.required),
+      word: new FormControl('',Validators.required),
+      timer: new FormControl('',Validators.required),
+      meaning: new FormControl('',Validators.required)
     })
   }
 
-  hide(){
+  userDetails: any;
+  ngOnInit(): void {
+      this.getGrade();
+      this.getSubject();
+      this.userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '');
+  }
+
+  grades:any;
+  getGrade():any {
+    this.loaderService.show();
+    this.commonService.getGrade()
+    .subscribe({
+      next: (res) => {
+        this.grades = res?.responseBody;
+        this.loaderService.hide();
+      },
+      error: (err:any) => {
+        this.loaderService.hide();
+      }
+    })
+  }
+
+  subjects: any;
+  getSubject() {
+  this.loaderService.show();
+  this.commonService.getFilteredConfig('subject')
+  .subscribe({
+    next: (res: any) => {
+      console.log(res);
+      this.subjects = res?.responseBody;
+      this.loaderService.hide();
+    },
+    error: (error: any) => {
+      console.log(error);
+      this.loaderService.hide();
+    }
+  })
+}
+
+  hide() {
     this.modelRef.hide();
+  }
+
+  save() {
+    this.loaderService.show();
+    const payload = {
+      grade: this.taskForm.get('grade')?.value,
+      subject: this.taskForm.get('subject')?.value,
+      meaning: this.taskForm.get('meaning')?.value,
+      count: this.taskForm.get('count')?.value,
+      timer: this.taskForm.get('timer')?.value,
+      word: this.taskForm.get('meaning')?.value,
+      createdBy: this.userDetails?.name
+    }
+    console.log(payload,'payload')
+    this.taskService.postTaskData(payload)
+    .subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.loaderService.hide();
+        this.hide();
+        this.commonService.show('Task created',TOAST_TYPES.SUCCESS);
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.loaderService.hide();
+        this.commonService.show('Failed create task',TOAST_TYPES.ERROR);
+        this.hide();
+      }
+    })
+  }
+
+  update() {
+    this.loaderService.show();
   }
 }

@@ -13,15 +13,16 @@
                    <label class="form-label">Grade</label>
                    <select formControlName="grade" class="form-select">
                     <option value="">Select</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
+                    @for(grade of grades;track grade) {
+                        <option [value]="grade?.value">{{grade?.value}}</option>
+                    }
                    </select>
                    <label class="form-label">Subject</label>
                    <select formControlName="subject" class="form-select">
                     <option value="">Select</option>
-                    <option value="2">1</option>
-                    <option value="2">2</option>
-                    <option value="2">3</option>
+                    @for(subject of subjects;track subject) {
+                        <option [value]="subject?.value">{{subject?.value | titlecase}}</option>
+                    }
                    </select>
                 </div>
                 <div class="col">
@@ -52,8 +53,8 @@
 </div>
 
 <div class="modal-footer text-light">
-  <button *ngIf="popUpType == 'add'" class="btn btn-outline-light">Save</button>
-  <button *ngIf="popUpType == 'edit'" class="btn btn-outline-light">Update</button>
+  <button *ngIf="popUpType == 'add'" [disabled]="taskForm.invalid" class="btn btn-outline-light" (click)="save()">Save</button>
+  <button *ngIf="popUpType == 'edit'" [disabled]="taskForm.invalid" class="btn btn-outline-light" (click)="update()">Update</button>
   <button class="btn btn-outline-light" (click)="hide()">Close</button>
 </div>
 </div>

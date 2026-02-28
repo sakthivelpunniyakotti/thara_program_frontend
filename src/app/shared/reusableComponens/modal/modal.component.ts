@@ -26,7 +26,8 @@ export class ModalComponent {
   popUpType: any;
   title: any = '';
   selectedValue: any = '';
-  configForm!: FormGroup
+  configForm!: FormGroup;
+  userDetails: any;
 
   constructor(
     private modalRef: BsModalRef,
@@ -41,6 +42,7 @@ export class ModalComponent {
   }
 
   ngOnInit(): void {
+     this.userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '');
     this.getConfigData();
     console.log(this.data)
     if(this.title == 'Edit') {
@@ -89,7 +91,8 @@ export class ModalComponent {
     this.loaderSerive.show();
     const payload  = {
     "configType": this.configForm.get('configType')?.value,
-    "value": this.configForm.get('value')?.value
+    "value": this.configForm.get('value')?.value,
+    "configBy": this.userDetails?.name
     }
     console.log(this.configForm.value,'form data')
 
