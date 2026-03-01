@@ -13,6 +13,7 @@ export class TaskService {
 
   constructor(private http: HttpClient) { }
 
+  // post
   postTaskData(payload: any):Observable<any> {
     const url = `${this.baseUrl}/task/create`;
     return this.http.post(url,payload).pipe(
@@ -23,6 +24,30 @@ export class TaskService {
     )
 
   }
+
+  //update
+  updateTaskData(payload: any):Observable<any> {
+    const url = `${this.baseUrl}/task/update`;
+    return this.http.put(url,payload).pipe(
+      catchError((error) => {
+        console.log('Error while updating the task data');
+        return throwError(() => error)
+      })
+    )
+
+  }
+
+  //delete
+  deleteTaskData(id: number): Observable<any> {
+  const url = `${this.baseUrl}/task/delete/${id}`;
+
+  return this.http.delete(url).pipe(
+    catchError((error) => {
+      console.log('Error while deleting the task data');
+      return throwError(() => error);
+    })
+  );
+}
 
   // get with filter
   // getFilteredTaskList(subject='',grade=''): Observable<any> {

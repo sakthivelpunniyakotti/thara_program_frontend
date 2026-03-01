@@ -6,6 +6,7 @@ import { CommonService } from '../../../../core/service/common.service';
 import { LoaderService } from '../../../../core/service/loader.service';
 import { TaskService } from '../../../../core/service/task.service';
 import { TOAST_TYPES } from '../../enums/toastType';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-task-modal',
@@ -20,6 +21,7 @@ import { TOAST_TYPES } from '../../enums/toastType';
 export class TaskModalComponent implements OnInit{
   title: string = '';
   popUpType: string = '';
+  data: any;
 
   taskForm!:FormGroup
 
@@ -44,6 +46,17 @@ export class TaskModalComponent implements OnInit{
       this.getGrade();
       this.getSubject();
       this.userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '');
+      if(this.popUpType == 'edit') {
+        console.log(this.data,'data')
+        this.taskForm.patchValue({
+          subject: this.data?.subject,
+          grade: this.data?.grade,
+          count: this.data?.count,
+          word: this.data?.word,
+          timer: this.data?.timer,
+          meaning: this.data?.meaning
+        })
+      }
   }
 
   grades:any;
@@ -111,7 +124,46 @@ export class TaskModalComponent implements OnInit{
     })
   }
 
+onClose: Subject<any> = new Subject();
+
+  closeModal(data?: any) {
+    this.onClose.next(data);   // send data back
+    this.onClose.complete();
+    this.modelRef.hide();
+  }
+
   update() {
     this.loaderService.show();
+     const payload ={
+      "id":this.data?.id,
+      "subject": this.taskForm.get('subject')?.value,
+      "grade": this.taskForm.get('grade')?.value,
+      "count": this.taskForm.get('count')?.value,
+      "timer": this.taskForm.get('timer')?.value,
+      "word": this.taskForm.get('word')?.value,
+      "meaning": this.taskForm.get('meaning')?.value,
+      "createdBy": this.userDetails?.name,
+     }
+
+     this.taskService.updateTaskData(payload)
+     .subscribe({
+      next: (res: any) => {
+        if(res?.statusCode =='200') {
+          this.commonService.show('Update successfull',TOAST_TYPES.SUCCESS);
+          this.loaderService.hide();
+          this.hide();
+        }
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.loaderService.hide();
+        this.commonService.show('Failed to update task',TOAST_TYPES.ERROR);
+        this.hide();
+      }
+     })
+  }
+
+  delete(): void {
+    this.closeModal('Y');
   }
 }

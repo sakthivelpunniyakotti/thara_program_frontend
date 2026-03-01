@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { MultiSelectComponent } from '../../shared/reusableComponens/multi-select/multi-select.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { initialState, MODALCSS } from '../../shared/reusableComponens/enums/toastType';
+import { initialState, MODALCSS, TOAST_TYPES } from '../../shared/reusableComponens/enums/toastType';
 import { TaskModalComponent } from '../../shared/reusableComponens/modal/task-modal/task-modal.component';
 import { TaskDefaulterModalComponent } from '../../shared/reusableComponens/modal/task-defaulter-modal/task-defaulter-modal.component';
 import { TaskService } from '../../core/service/task.service';
@@ -143,9 +143,14 @@ getSubject() {
       data: task
     }
 
-    this.bsModal.show(TaskModalComponent,{
+   const modelRef = this.bsModal.show(TaskModalComponent,{
       initialState,
       class: MODALCSS.CENTER
+    })
+
+    
+    modelRef.onHidden?.subscribe(() => {
+      this.getTaskTableData();
     })
 
   }
@@ -155,13 +160,39 @@ getSubject() {
       title: 'Delete',
       msg: '',
       popUpType: 'delete',
-      data: {}
+      data: task
     }
 
-    this.bsModal.show(TaskModalComponent,{
+  const modelRef =  this.bsModal.show(TaskModalComponent,{
       initialState,
       class: MODALCSS.DEFAULT_SMALL
     })
 
+  modelRef.content?.onClose.subscribe((result: any) => {
+    if(result == 'Y') {
+      this.deleteTask(task)
+    }
+  })
+
+  }
+
+  deleteTask(data: any) {
+    this.loaderService.show();
+
+    this.taskService.deleteTaskData(data?.id)
+    .subscribe({
+      next: (res: any) => {
+        if(res?.statusCode == '200') {
+          this.commonService.show('Delete successfull',TOAST_TYPES.SUCCESS);
+          this.getTaskTableData();
+        }
+        this.loaderService.hide();
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.loaderService.hide();
+        this.commonService.show('Delete not completed',TOAST_TYPES.ERROR);
+      }
+    })
   }
 }

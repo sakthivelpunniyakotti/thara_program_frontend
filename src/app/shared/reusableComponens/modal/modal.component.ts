@@ -133,6 +133,7 @@ export class ModalComponent {
         },
         error: (error: any) => {
           console.log(error);
+          this.hide();
           this.commonService.show('Failed to update',TOAST_TYPES.ERROR);
           this.loaderSerive.hide();
         }
