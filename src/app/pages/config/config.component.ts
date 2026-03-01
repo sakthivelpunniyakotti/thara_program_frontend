@@ -23,7 +23,7 @@ import { FormsModule } from '@angular/forms';
 export class ConfigComponent implements OnInit {
 
 serialNo: number = 1;
-filterType: any = '';
+filterType: any = 'all';
 searchKey: any = '';
 
 constructor(private bsmodel: BsModalService,private loaderService: LoaderService, private commonService: CommonService){}

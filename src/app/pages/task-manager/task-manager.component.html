@@ -17,11 +17,11 @@
                 <div class="filter-tile bg-light border border-dark rounded d-flex align-item-center justify-content-between">
                     <!-- grade filter -->
                      <div class="round-border m-2 w-20">
-                        <app-multi-select [placeholder]="'Select Grade'"></app-multi-select>
+                        <app-multi-select [options]="grades" (selectedData)="onGradeSelect($event)" [placeholder]="'Select Grade'"></app-multi-select>
                      </div>
                      <!-- subject filter -->
                      <div class="round-border m-2 w-20">
-                        <app-multi-select [placeholder]="'Select Subject'"></app-multi-select>
+                        <app-multi-select [options]="subjects" (selectedData)="onSubjectSelect($event)" [placeholder]="'Select Subject'"></app-multi-select>
                      </div>
                     <!-- input search -->
                   <div class="rounder-border m-2 w-20">
@@ -39,6 +39,7 @@
             <div class="col">
                 <div class="main-tile bg-light border border-dark rounded d-flex align-item-center justify-content-center">
                     <!-- student list - table -->
+                     @if(taskTableData?.length > 0 ) {
                       <table  style="width: 95%;">
                         <tr>
                             <th style="width: 10%;" class="text-center">Serial. No</th>
@@ -49,19 +50,24 @@
                             <th style="width: 10%;" class="text-center">Time</th>
                             <th style="text-align: center;width: 100px;">Action</th>
                         </tr>
-                        <tr class="text-center">
-                            <td>1</td>
-                            <td>6th</td>
-                            <td>English</td>
-                            <td colspan="">5</td>
-                            <td>Charm</td>
-                            <td>70</td>
-                            <td class="d-flex">
-                                <button class="btn btn-outline-dark p-1 m-1" (click)="edit()">Edit</button>
-                                <button class="btn btn-outline-dark p-1 m-1" (click)="delete()">Delete</button>
-                            </td>
-                        </tr>
+                        @for( task of taskTableData; track task; let i=$index) {
+                            <tr class="text-center">
+                                <td>{{i+serialNo}}</td>
+                                <td>{{task?.grade | titlecase}}</td>
+                                <td>{{task?.subject | titlecase}}</td>
+                                <td colspan="">{{task?.count}}</td>
+                                <td>{{task?.word | titlecase}}</td>
+                                <td>{{task?.timer}}</td>
+                                <td class="d-flex">
+                                    <button class="btn btn-outline-dark p-1 m-1" (click)="edit(task)">Edit</button>
+                                    <button class="btn btn-outline-dark p-1 m-1" (click)="delete(task)">Delete</button>
+                                </td>
+                            </tr>
+                        }
                       </table>
+                    } @else {
+                        No data found
+                    }
                 </div>
             </div>
         </div> 

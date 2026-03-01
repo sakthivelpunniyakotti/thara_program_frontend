@@ -23,4 +23,36 @@ export class TaskService {
     )
 
   }
+
+  // get with filter
+  // getFilteredTaskList(subject='',grade=''): Observable<any> {
+  //   const url = `${this.baseUrl}/task/filter/${subject}/${grade}`;
+
+  //   return this.http.get(url).pipe(
+  //     catchError((error) => {
+  //       console.error('Error while fetching filtered task master list', error);
+  //       return throwError(() => error);
+  //     })
+  //   );
+  // }
+
+  getFilteredTaskList(subject: string = '', grade: string = ''): Observable<any> {
+
+  let params = new HttpParams();
+
+  if (subject) {
+    params = params.set('subject', subject);
+  }
+
+  if (grade) {
+    params = params.set('grade', grade);
+  }
+
+  return this.http.get(`${this.baseUrl}/task/filter`, { params }).pipe(
+    catchError((error) => {
+      console.error('Error while fetching filtered task master list', error);
+      return throwError(() => error);
+    })
+  );
+}
 }
