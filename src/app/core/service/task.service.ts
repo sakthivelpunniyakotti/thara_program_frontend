@@ -80,4 +80,16 @@ export class TaskService {
     })
   );
 }
+
+//global search
+searchTask(searchKey: string): Observable<any> {
+    const url = `${this.baseUrl}/task/search`;
+
+    return this.http.post(url, { searchKey }).pipe(
+      catchError((error) => {
+        console.error('Error while searching taks', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

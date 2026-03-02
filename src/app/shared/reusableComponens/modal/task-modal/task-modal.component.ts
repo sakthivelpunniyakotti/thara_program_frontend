@@ -55,7 +55,20 @@ export class TaskModalComponent implements OnInit{
           word: this.data?.word,
           timer: this.data?.timer,
           meaning: this.data?.meaning
-        })
+        });
+      }
+
+      const defaulter = localStorage.getItem('defaulter');
+      if(defaulter && this.popUpType !== 'edit') {
+        const defaultJson = JSON.parse(defaulter);
+        this.taskForm.patchValue({
+          subject: defaultJson?.subject,
+          grade: defaultJson?.grade,
+          count: defaultJson?.count,
+          word: defaultJson?.word,
+          timer: defaultJson?.timer,
+          meaning: defaultJson?.meaning
+        });
       }
   }
 

@@ -9,6 +9,7 @@ import { TaskService } from '../../core/service/task.service';
 import { LoaderService } from '../../core/service/loader.service';
 import { CommonService } from '../../core/service/common.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-task-manager',
@@ -16,7 +17,8 @@ import { CommonModule } from '@angular/common';
   imports: [
     SidebarComponent,
     MultiSelectComponent,
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   templateUrl: './task-manager.component.html',
   styleUrl: './task-manager.component.css'
@@ -24,6 +26,7 @@ import { CommonModule } from '@angular/common';
 export class TaskManagerComponent implements OnInit{
 
   serialNo: number=1;
+  taskSearch: any;
 
   constructor(
     private bsModal: BsModalService,
@@ -83,6 +86,23 @@ getSubject() {
   })
 }
 
+search(): void {
+  this.loaderService.show();
+  this.taskService.searchTask(this.taskSearch)
+  .subscribe({
+    next: (res: any) => {
+      if(res?.statusCode == '200') {
+        this.taskTableData = res?.responseBody;
+      }
+      this.loaderService.hide();
+    },
+    error: (error: any) => {
+      console.log(error);
+      this.taskTableData = [];
+      this.loaderService.hide();
+    }
+  })
+}
 
   subjectFilter= '';
   gradeFilter='';
@@ -114,9 +134,13 @@ getSubject() {
       data:{}
     }
 
-    this.bsModal.show(TaskModalComponent,{
+   const modelRef = this.bsModal.show(TaskModalComponent,{
       initialState,
       class: MODALCSS.CENTER
+    });
+
+    modelRef?.onHidden?.subscribe(() => {
+      this.getTaskTableData();
     })
 
   }

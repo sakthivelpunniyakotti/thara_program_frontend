@@ -25,7 +25,7 @@
                      </div>
                     <!-- input search -->
                   <div class="rounder-border m-2 w-20">
-                    <input class="input-border" placeholder="Search..." type="text">
+                    <input class="input-border" (keydown.enter)="search()" [(ngModel)]="taskSearch" placeholder="Search..." type="text">
                   </div>
                     <!-- Defaulter -->
                   <div class="rounder-border m-2 w-20 d-flex align-item-center justify-content-end">
