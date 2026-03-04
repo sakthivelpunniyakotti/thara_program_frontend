@@ -33,5 +33,9 @@ export const routes: Routes = [
     {
         path: 'config',
         loadComponent: () => import('./pages/config/config.component').then((m)=>m.ConfigComponent)
-    }
+    },
+    {
+        path: 'mail-board',
+        loadComponent: () => import('./pages/mail-board/mail-board.component').then((m)=>m.MailBoardComponent)
+    },
 ];

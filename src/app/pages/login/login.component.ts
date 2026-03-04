@@ -110,9 +110,12 @@ export class LoginComponent implements OnInit {
       next:(res:any) => {
 
         console.log(res,"response from server");
+
         // store the screen access to the local storage.
         this.loaderService.hide();
         this.router.navigateByUrl('/dashboard');
+        const userDetails = JSON.stringify(res?.responseBody[0]);
+        sessionStorage.setItem('userDetails',userDetails);
         this.commonService.show('Login successful',TOAST_TYPES.SUCCESS);
       },
       error:(err:any) => {

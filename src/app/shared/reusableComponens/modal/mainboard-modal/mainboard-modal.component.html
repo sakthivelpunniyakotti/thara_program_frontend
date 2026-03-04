@@ -1,0 +1,26 @@
+@if(popUpType == 'warning'){
+<div class="container bg-dark rounded border border-light p-1">
+<div class="modal-header d-flex align-item-center justify-content-between">
+  <h5 class="modal-title text-light ">{{title}}</h5>
+  <button type="button" class="btn btn-outline-light" (click)="hide()">X</button>
+</div>
+<div class="modal-body text-center text-light">
+  {{msg}}
+</div>
+
+</div>
+}@else if(popUpType== 'success') {
+    <div class="container bg-dark rounded border border-light p-1">
+
+<div class="modal-body text-center text-light">
+  {{msg}}
+</div>
+
+<div class="modal-footer d-flex align-item-center justify-content-around text-light">
+   <button class="btn btn-outline-light" (click)="proceed()">Proceed</button>
+  <button class="btn btn-outline-light" (click)="hide()">Retry</button>
+</div>
+
+</div>
+}
+

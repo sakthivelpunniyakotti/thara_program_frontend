@@ -9,22 +9,47 @@
                 <div class="header-tile bg-light border border-dark rounded d-flex align-item-center justify-content-between mt-3">
                     <p class="h1 m-1">Workboard</p>
                     <div class="bg-light border border-dark rounded d-flex justify-content-end align-item-center m-2 w-20">
-                        <select class="form-select">
-                            <option value="">Select</option>
-                            <option value="">1</option>
+                        <select (change)="onSubjectChange()" [(ngModel)]="subjectFilter" class="form-select">
+                            @for(subject of subjects;track subject) {
+                                <option [value]="subject?.value">{{subject?.value | titlecase}}</option>
+                            }
                         </select>
                     </div>
                 </div>
             </div>
         </div>
         <!-- main container -->
-        <div class="row mb-1 grid-container ">
-            @for(subject of subjects;track subject){
-             <div class="col">
-                 <div class="bg-light border border-dark rounded">
-                     <p class="h3 text-center">Lesson - 1</p>
-                 </div>
-             </div>
+        <div style="cursor: pointer !important;" class="row mb-1 grid-container ">
+            @for(workboard of workboardList;track workboard;let i=$index){
+             <div class="col position-relative">
+  <div (click)="goToMainBoard(workboard)"
+    class="bg-light border border-dark rounded p-3 lesson-card"
+    [class.locked]="workboard?.id > studentTaskHistoryjson?.taskHistoryJson[configKey]"
+  >
+    
+    <!-- Header -->
+    <div class="d-flex justify-content-center align-items-center gap-2">
+      <p class="h3 m-0">Lesson - {{ i + serialNo }}</p>
+      
+
+      <!-- Show unlock icon next to lesson -->
+      @if(workboard?.id <= studentTaskHistoryjson?.taskHistoryJson[configKey]) {
+        <img src="/assets/icons/unlock-fill.svg" alt="unlock" width="22">
+      }
+    </div>
+    @if(workboard?.id <= studentTaskHistoryjson?.taskHistoryJson[configKey]) {
+        <p>last worked On</p>
+      }
+
+    <!-- Lock Overlay -->
+    @if(workboard?.id > studentTaskHistoryjson?.taskHistoryJson[configKey]) {
+      <div style="cursor: not-allowed;" class="lock-overlay">
+        <img src="/assets/icons/lock-fill.svg" alt="lock" width="40">
+      </div>
+    }
+
+  </div>
+</div>
             }
         </div>
         <!-- pagination -->
