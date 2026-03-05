@@ -33,7 +33,10 @@ export class MainboardModalComponent {
 
   hide(): void {
     this.modalref.hide();
-    this.closeModal('n');
+  }
+
+  retry() {
+    this.closeModal('n')
   }
 
   proceed(): void {
