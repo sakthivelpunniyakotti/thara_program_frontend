@@ -4,8 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { MainboardModalComponent } from '../../shared/reusableComponens/modal/mainboard-modal/mainboard-modal.component';
-import { MODALCSS } from '../../shared/reusableComponens/enums/toastType';
+import { MODALCSS, TOAST_TYPES } from '../../shared/reusableComponens/enums/toastType';
 import { initialState } from '../../shared/reusableComponens/enums/toastType';
+import { CommonService } from '../../core/service/common.service';
+import { LoaderService } from '../../core/service/loader.service';
+import { WorkboardService } from '../../core/service/workboard.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mail-board',
@@ -31,12 +35,22 @@ word: any;
 wordForm:any;
 
 constructor(
-  private bsModal: BsModalService
+  private bsModal: BsModalService,
+  private commonService: CommonService,
+  private loaderService: LoaderService,
+  private workboard: WorkboardService,
+  private router: Router
 ){}
 
+userDetails: any;
+studentTaskHistoryjson: any;
+taskDetails: any;
 ngOnInit(): void {
     const mainboardData = (sessionStorage.getItem('mailBoardData') || '');
     const jsonMainboardData = JSON.parse(mainboardData);
+    this.taskDetails = jsonMainboardData;
+    this.userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '');
+
     if(jsonMainboardData) {
       this.setCount = Number(jsonMainboardData?.count);
       this.timer = Number(jsonMainboardData?.timer);
@@ -129,11 +143,80 @@ warning(msg: any,title: string,type: string){
     });
 
     modelRef.content?.onClose.subscribe((result: any) => {
+      console.log(result,'res---------------------')
       if(result == 'y') {
-        
+        this.getConfigHistory();
+      } else {
+        this.resetData()
       }
     })
   }
+
+getConfigHistory() {
+  const payload = {
+    studentId: this.userDetails?.id,
+    studentName: this.userDetails?.name,
+    taskHistoryJson: {
+      name: this.userDetails?.name
+    }
+  }
+  this.loaderService.show();
+
+  this.workboard.getTaskHistoryOrCreate(payload)
+  .subscribe({
+    next: (res: any) => {
+      console.log(res);
+      this.studentTaskHistoryjson = res?.responseBody[0];
+      this.loaderService.hide();
+      
+      if(this.studentTaskHistoryjson) {
+          this.configTaskHistory();
+      }
+      
+    },
+    error: (error: any) => {
+      console.log(error);
+      this.commonService.show('failed to fetch task history',TOAST_TYPES.ERROR);
+      this.loaderService.hide();
+    }
+  })
+}
+
+configKey:any;
+//get task history
+configTaskHistory(): void {
+   this.configKey = `${this.taskDetails?.subject}LastTaskId`;
+  if(this.studentTaskHistoryjson?.taskHistoryJson[this.configKey]) {
+    this.studentTaskHistoryjson.taskHistoryJson[this.configKey]=this.taskDetails?.nextTaskId;
+    // update config history
+    console.log('task history updating');
+    const payload = {
+      id: this.studentTaskHistoryjson?.id,
+      studentName: this.studentTaskHistoryjson?.studentName,
+      taskHistoryJson: this.studentTaskHistoryjson?.taskHistoryJson
+    }
+    this.loaderService.show();
+    this.workboard.updateTaskHistory(payload)
+    .subscribe({
+      next: (res: any) => {
+        this.loaderService.hide();
+        console.log(res,'res');
+        this.router.navigateByUrl('workboard');
+        sessionStorage.removeItem('mailBoardData');
+        this.resetData();
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.loaderService.hide();
+      }
+    })
+  }
+  
+}
+
+resetData() {
+  this.actualCount = 0;
+}
 
 submitTest(): void {
   if(this.actualCount >= this.setCount) {
@@ -141,10 +224,13 @@ submitTest(): void {
    this.warning(msg,'Task Completed','success')
   }else {
     const msg ='your actual count is not equal to the set count';
-     this.warning(msg,'Warning','warming');
+     this.warning(msg,'Warning','warning');
   }
 }
 
+ngOnDestroy() {
+  sessionStorage.removeItem('mailBoardData');
+}
 
 }
  

@@ -63,7 +63,7 @@ getConfigHistory() {
       }
       
     },
-    error: (res: any) => {
+    error: (error: any) => {
       console.log(error);
       this.commonService.show('failed to fetch task history',TOAST_TYPES.ERROR);
       this.loaderService.hide();
@@ -118,7 +118,7 @@ configTaskHistory(): void {
         this.loaderService.hide();
         console.log(res,'res');
       },
-      error: (res: any) => {
+      error: (error: any) => {
         console.log(error);
         this.loaderService.hide();
       }
@@ -127,8 +127,14 @@ configTaskHistory(): void {
   
 }
 
-goToMainBoard(workboardData: any): void {
+goToMainBoard(workboardData: any, index: number): void {
   this.router.navigateByUrl('mail-board');
+  if((index+1)<this.workboardList.length) {
+    workboardData.nextTaskId = this.workboardList[index+1]?.id;
+  } else {
+    workboardData.nextTaskId = this.workboardList[index]?.id;
+  }
+  console.log(workboardData,'word')
   sessionStorage.setItem('mailBoardData',JSON.stringify(workboardData));
 }
 

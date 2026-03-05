@@ -116,7 +116,7 @@ export class TaskModalComponent implements OnInit{
       meaning: this.taskForm.get('meaning')?.value,
       count: this.taskForm.get('count')?.value,
       timer: this.taskForm.get('timer')?.value,
-      word: this.taskForm.get('meaning')?.value,
+      word: this.taskForm.get('word')?.value,
       createdBy: this.userDetails?.name
     }
     console.log(payload,'payload')

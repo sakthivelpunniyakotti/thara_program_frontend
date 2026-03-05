@@ -33,12 +33,12 @@ export class MainboardModalComponent {
 
   hide(): void {
     this.modalref.hide();
+    this.closeModal('n');
   }
 
   proceed(): void {
-    this.proceedStatus = 'y';
-   this.router.navigateByUrl('/workboard');
-   this.hide();
+   this.proceedStatus = 'y';
+   this.closeModal('y');   
 }
   
 }
