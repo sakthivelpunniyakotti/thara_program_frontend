@@ -15,20 +15,33 @@
                     <label for="">Grade</label>
                     <select formControlName="grade" class="form-select">
                         <option value="">Select</option>
-                        <option value="option">option 1</option>
-                        <option value="option">option 2</option>
+                        @for(grade of grades;track grade) {
+                            <option [value]="grade.value">{{grade.value}}</option>
+                        }
                     </select> 
                 </div>
                 <div class="col">
                     <label class="form-label" for="">Name</label>
                     <input class="form-control" type="text" placeholder="Name" formControlName="name">
                     <label for="">Skill</label>
-                    <select formControlName="skill" class="form-select">
+                    <select (change)="addSkill()" formControlName="skill" class="form-select">
                         <option value="">Select</option>
-                        <option value="1">option - 1</option>
-                        <option value="3">option - 2</option>
+                        @for(skill of skills;track skill) {
+                            <option [value]="skill.value">{{skill.value}}</option>
+                        }
+                        
                     </select>
-
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class="form-label">Skill tags</label>
+                    <div>
+                        <!-- max of 5 skills -->
+                         @for(skill of skillList;track skill) {
+                        <button class="btn btn-outline-light m-1" (click)="removeSkill(skill)" >{{skill | titlecase}} X</button>
+                         }
+                    </div>
                 </div>
             </div>
         </div>
@@ -36,8 +49,8 @@
 </div>
 
 <div class="modal-footer text-light">
-  <button *ngIf="popUpType == 'add'" class="btn btn-outline-light">Save</button>
-  <button *ngIf="popUpType == 'edit'" class="btn btn-outline-light">Update</button>
+  <button *ngIf="popUpType == 'add'" (click)="save()" [disabled]="studentsForm.invalid && skillList.size > 0" class="btn btn-outline-light">Save</button>
+  <button *ngIf="popUpType == 'edit'" (clcik)="update()" class="btn btn-outline-light">Update</button>
   <button class="btn btn-outline-light" (click)="hide()">Close</button>
 </div>
 </div>

@@ -11,11 +11,11 @@
                     <div class="bg-light border border-dark rounded d-flex justify-content-center align-item-center m-2">
                         <div class="d-flex flex-column align-item-center justify-content-center">
                             <div class="d-flex align-item-center justify-content-center">
-                                <p class="m-0">Tom</p>
+                                <p class="m-0">{{userDetails?.name | titlecase}}</p>
                             </div>
                             <div>
-                                <span>English</span> -
-                                <span>12345</span>
+                                <span>{{taskDetails?.subject | titlecase}}</span> -
+                                <span>{{userDetails?.id}}</span>
                             </div>
                         </div>
                     </div>
@@ -27,13 +27,16 @@
         <div class="row mb-1">
             <div class="col">
                 <div class="main-tile bg-light border border-dark rounded">
+                    <div (click)="back()" class="p-3">
+                        <img src="assets/icons/arrow-90deg-left.svg" alt="">
+                    </div>
                     <!-- set and act -->
                      <div class="d-flex align-item-center justify-content-between ">
                          <div >
                              <p class="h3 px-2">Set - {{setCount}}</p>
                          </div>
                          <div class="d-flex align-item-center justify-content-center">
-                            <span class="text-center me-3"><img style="width: 30px;" src="assets/icons/megaphone-fill.svg" alt="speaker"></span>
+                            <span class="text-center me-3"><img (click)="speak(word)" style="width: 30px;" src="assets/icons/megaphone-fill.svg" alt="speaker"></span>
                              <p class="h3 px-2">Act - {{actualCount}}</p>
                          </div>
                      </div>
@@ -43,7 +46,24 @@
                             <!-- word to type -->
                             <p class="h1">{{word}}</p>
                             <!-- timer -->
-                            <p  class="h2 text-center">{{timer}}</p>
+                            <div class="d-flex justify-content-center align-items-center gap-2">
+
+                                <p class="h2 text-center mb-0">{{ timer }}</p>
+
+                                 @if (remainingTime == 0) {
+                                     <img (click)="startTimer(setTime)" src="assets/icons/arrow-clockwise.svg" alt="play" width="24" height="24">
+                                 } 
+                                 @if (!pauseBtn && remainingTime !== 0) {
+                                    <img (click)="pause()" src="assets/icons/pause.svg" alt="">
+                                 } 
+                                 @if(pauseBtn && remainingTime !== 0) {
+                                      <img (click)="resume()" src="assets/icons/play.svg"  alt=""  width="24" height="24">
+                                 }
+                                 @if (remainingTime != 0) {
+                                     <img (click)="reset()" src="assets/icons/arrow-clockwise.svg" alt="play" width="24" height="24">
+                                 } 
+
+                           </div>
                         </div>
                      </div>    
                        <!-- word typing -->
@@ -61,6 +81,7 @@
       class="form-control"
       (keydown.enter)="submit($event)"
       [(ngModel)]="wordForm"
+      [readonly] = "pauseBtn"
     />
   
     <div [ngClass]="{error:invalidWord}" class="output">
@@ -84,7 +105,7 @@
                        </div>
                        <!-- submit -->
                         <div class="d-flex align-item-center justify-content-center">
-                            <button (click)="submitTest()" class="btn btn-outline-dark m-2">Submit</button>
+                            <button [disabled]="setCount>actualCount" (click)="submitTest()" class="btn btn-outline-dark m-2">Submit</button>
                         </div>
                 </div>
             </div>

@@ -30,7 +30,7 @@ animatedIndex: number = -1;
 
 setCount: any;
 actualCount: any = 0;
-timer: any;
+timer: string = "00:00";
 word: any;
 wordForm:any;
 
@@ -45,6 +45,7 @@ constructor(
 userDetails: any;
 studentTaskHistoryjson: any;
 taskDetails: any;
+setTime: any;
 ngOnInit(): void {
     const mainboardData = (sessionStorage.getItem('mailBoardData') || '');
     const jsonMainboardData = JSON.parse(mainboardData);
@@ -53,10 +54,73 @@ ngOnInit(): void {
 
     if(jsonMainboardData) {
       this.setCount = Number(jsonMainboardData?.count);
-      this.timer = Number(jsonMainboardData?.timer);
+      this.startTimer(Number(jsonMainboardData?.timer));
+      this.setTime = Number(jsonMainboardData?.timer)
       this.word = jsonMainboardData?.word
     }
 }
+
+back() {
+  this.router.navigateByUrl('workboard');
+}
+
+speak(text: string) {
+  const speech = new SpeechSynthesisUtterance(text);
+  speech.lang = 'en-US';
+  speech.rate = 1;
+  speech.pitch = 1;
+
+  window.speechSynthesis.speak(speech);
+}
+
+//timer
+private interval: any;
+public remainingTime: number = 0;
+
+pauseBtn: boolean = false;
+pause() {
+   clearInterval(this.interval);
+   this.pauseBtn = true;
+   this.updateDisplay()
+}
+
+reset() {
+  clearInterval(this.interval);
+  this.startTimer(this.setTime);
+}
+
+resume() {
+  this.startTimer(this.remainingTime);
+}
+
+startTimer(seconds: number) {
+  this.pauseBtn = false;
+    this.remainingTime = seconds;
+    this.updateDisplay();
+
+    this.interval = setInterval(() => {
+      this.remainingTime--;
+      if (this.remainingTime <= 0) {
+        clearInterval(this.interval);
+        this.timer = "Time Up!";
+        return;
+      }
+
+      this.updateDisplay();
+    }, 1000);
+  }
+
+  updateDisplay() {
+    const minutes = Math.floor(this.remainingTime / 60);
+    const seconds = this.remainingTime % 60;
+
+    this.timer =
+      `${this.pad(minutes)}:${this.pad(seconds)}`;
+  }
+
+  pad(num: number): string {
+    return num < 10 ? '0' + num : num.toString();
+  }
 
 onInput(event: any) {
   const input = event.target as HTMLInputElement;
@@ -85,19 +149,23 @@ preventCopy(event: ClipboardEvent) {
   event.preventDefault();
 }
 
+finishedTimeInSec: number=0;
 invalidWord:boolean= false;
 submit(event: any) {
   const word = event.target.value;
   console.log(this.word);
   const typedWord = this.letters.join("");
   if(word) {
+    this.finishedTimeInSec = this.remainingTime;
     if(this.word == typedWord) {
       console.log("entered");
       this.actualCount++;
       this.triggerPopup();
+      this.speak(this.word)
       this.wordForm = '';
       this.invalidWord = false;
       this.letters = [];
+      
     } else if(this.word !== typedWord) {
         this.invalidWord=true;
     }
@@ -143,11 +211,11 @@ warning(msg: any,title: string,type: string){
     });
 
     modelRef.content?.onClose.subscribe((result: any) => {
-      console.log(result,'res---------------------')
       if(result == 'y') {
         this.getConfigHistory();
       } else {
-        this.resetData()
+        this.resetData();
+        this.startTimer(this.setTime)
       }
     })
   }
@@ -219,12 +287,19 @@ resetData() {
 }
 
 submitTest(): void {
+
+  if(this.remainingTime==0) {
+    const msg = 'Times Up!, try agrain';
+    this.warning(msg,'Warning','timesUp');
+    return;
+  } else {
   if(this.actualCount >= this.setCount) {
     const msg ='Your task is completed!, Proceed to the next task.';
    this.warning(msg,'Task Completed','success')
   }else {
     const msg ='your actual count is not equal to the set count';
      this.warning(msg,'Warning','warning');
+  }
   }
 }
 

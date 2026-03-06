@@ -39,6 +39,10 @@ export class MainboardModalComponent {
     this.closeModal('n')
   }
 
+  resetTimer() {
+    this.closeModal('r');
+  }
+
   proceed(): void {
    this.proceedStatus = 'y';
    this.closeModal('y');   

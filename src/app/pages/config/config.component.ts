@@ -117,6 +117,7 @@ getConfigList() {
 
     modelRef.onHidden?.subscribe(() => {
       this.getConfigList();
+      this.getConfigData()
     })
 
   }

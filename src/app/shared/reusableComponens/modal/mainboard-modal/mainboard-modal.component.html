@@ -22,5 +22,18 @@
 </div>
 
 </div>
+} @else if(popUpType== 'timesUp') {
+    <div class="container bg-dark rounded border border-light p-1">
+
+<div class="modal-body text-center text-light">
+  {{msg}}
+</div>
+
+<div class="modal-footer d-flex align-item-center justify-content-around text-light">
+   <!-- <button class="btn btn-outline-light" (click)="proceed()">Proceed</button> -->
+  <button class="btn btn-outline-light" (click)="resetTimer()">Retry</button>
+</div>
+
+</div>
 }
 
