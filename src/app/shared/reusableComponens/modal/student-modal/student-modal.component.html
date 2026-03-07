@@ -38,8 +38,8 @@
                     <label class="form-label">Skill tags</label>
                     <div>
                         <!-- max of 5 skills -->
-                         @for(skill of skillList;track skill) {
-                        <button class="btn btn-outline-light m-1" (click)="removeSkill(skill)" >{{skill | titlecase}} X</button>
+                         @for(skill of skillList;track skill;let i = $index) {
+                        <button class="btn btn-outline-light m-1" (click)="removeSkill(i)" >{{skill | titlecase}} X</button>
                          }
                     </div>
                 </div>
@@ -49,7 +49,7 @@
 </div>
 
 <div class="modal-footer text-light">
-  <button *ngIf="popUpType == 'add'" (click)="save()" [disabled]="studentsForm.invalid && skillList.size > 0" class="btn btn-outline-light">Save</button>
+  <button *ngIf="popUpType == 'add'" (click)="save()" [disabled]="studentsForm.invalid || (skillList.length === 0)" class="btn btn-outline-light">Save</button>
   <button *ngIf="popUpType == 'edit'" (clcik)="update()" class="btn btn-outline-light">Update</button>
   <button class="btn btn-outline-light" (click)="hide()">Close</button>
 </div>

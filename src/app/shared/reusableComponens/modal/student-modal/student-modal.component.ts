@@ -5,6 +5,9 @@ import { MultiSelectComponent } from '../../multi-select/multi-select.component'
 import { CommonModule } from '@angular/common';
 import { CommonService } from '../../../../core/service/common.service';
 import { LoaderService } from '../../../../core/service/loader.service';
+import { StudentService } from '../../../../core/service/student.service';
+import { TOAST_TYPES } from '../../enums/toastType';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-student-modal',
@@ -26,15 +29,16 @@ export class StudentModalComponent implements OnInit {
   constructor(
     private modalRef: BsModalRef,
     private commonService: CommonService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private studentService: StudentService
   ){
     // exclude id. add role as default student.
     this.studentsForm = new FormGroup({
       // id: new FormControl(),
-      role: new FormControl('Student'),
+      role: new FormControl('student'),
       grade: new FormControl('',Validators.required),
-      name: new FormControl(''),
-      skill: new FormControl('',Validators.required)
+      name: new FormControl('',Validators.required),
+      skill: new FormControl('')
     })
   }
 
@@ -43,15 +47,22 @@ export class StudentModalComponent implements OnInit {
       this.getSkills();
   }
 
-  skillList: Set<any> = new Set();  
+  onClose: Subject<any> = new Subject();
+  
+    closeModal(data?: any) {
+      this.onClose.next(data);   // send data back
+      this.onClose.complete();
+      this.modalRef.hide();
+    }
+
+  skillList: any [] = [];
   addSkill(): void {
   const skills = this.studentsForm.get('skill')?.value;
-
-  if (Array.isArray(skills)) {
-    skills.forEach(skill => this.skillList.add(skill));
-  } else {
-    this.skillList.add(skills);
+  
+  if(!this.skillList.includes(skills)) {
+    this.skillList.push(skills)
   }
+  
   this.studentsForm.get('skill')?.setValue('');
 }
 
@@ -60,17 +71,36 @@ get skillArray() {
 }
 
 save() {
+  const payload = {
+    name: this.studentsForm.get('name')?.value,
+    type: this.studentsForm.get('role')?.value,
+    grade: this.studentsForm.get('grade')?.value,
+    skills: this.skillList
+  }
   this.loaderService.show();
-  console.log(this.studentsForm.value);
-  console.log(this.skillArray,'skill')
+  
+  this.studentService.postStudentData(payload)
+  .subscribe({
+    next: (res: any) => {
+      console.log(res);
+      this.loaderService.hide();
+      this.hide();
+    },
+    error: (error: any) => {
+      console.log(error);
+      this.commonService.show("Unable to create student record",TOAST_TYPES.ERROR);
+      this.loaderService.hide();
+      this.hide()
+    }
+  })
 }
 
 update() {
   this.loaderService.show()
 }
 
-removeSkill(skill: any): void {
-  this.skillList.delete(skill);
+removeSkill(index: any): void {
+  this.skillList.splice(index, 1);
 }
   skills:any;
   getSkills() {
