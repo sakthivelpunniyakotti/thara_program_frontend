@@ -35,6 +35,18 @@
             </div>
             <div class="row">
                 <div class="col">
+                    <label for="">Organization</label>
+                        <select formControlName="org" class="form-select">
+                            <option value="">Select</option>
+                            @for(org of organization;track org) {
+                                <option [value]="org.value">{{org.value}}</option>
+                            }
+                        </select> 
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
                     <label class="form-label">Skill tags</label>
                     <div>
                         <!-- max of 5 skills -->
@@ -50,7 +62,7 @@
 
 <div class="modal-footer text-light">
   <button *ngIf="popUpType == 'add'" (click)="save()" [disabled]="studentsForm.invalid || (skillList.length === 0)" class="btn btn-outline-light">Save</button>
-  <button *ngIf="popUpType == 'edit'" (clcik)="update()" class="btn btn-outline-light">Update</button>
+  <button *ngIf="popUpType == 'edit'" (click)="update()" class="btn btn-outline-light">Update</button>
   <button class="btn btn-outline-light" (click)="hide()">Close</button>
 </div>
 </div>
@@ -62,7 +74,7 @@
 </div>
 
 <div class="modal-footer d-flex align-item-center justify-content-around text-light">
-   <button class="btn btn-outline-light">Yes</button>
+   <button class="btn btn-outline-light" (click)="delete()">Yes</button>
   <button class="btn btn-outline-light" (click)="hide()">No</button>
 </div>
 </div>

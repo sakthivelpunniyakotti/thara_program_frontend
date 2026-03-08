@@ -19,9 +19,9 @@
                         <app-multi-select [placeholder]="'Select Grade'"></app-multi-select>
                      </div>
                      <!-- subject filter -->
-                     <div class="round-border m-2 w-20">
+                     <!-- <div class="round-border m-2 w-20">
                         <app-multi-select [placeholder]="'Select Subject'"></app-multi-select>
-                     </div>
+                     </div> -->
                     <!-- input search -->
                   <div class="rounder-border m-2 w-20">
                     <input class="input-border" placeholder="Search..." type="text">
@@ -39,18 +39,30 @@
                             <th>Name</th>
                             <th>Grade</th>
                             <th>Org</th>
+                            <th>Skill</th>
+                            <th>Created On</th>
+                            <th>Update On</th>
                             <th style="text-align: center;width: 100px;">Action</th>
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Tom</td>
-                            <td>Sub Admin</td>
-                            <td>Thara</td>
-                            <td class="d-flex">
-                                <button class="btn btn-outline-dark p-1 m-1" (click)="edit()">Edit</button>
-                                <button class="btn btn-outline-dark p-1 m-1" (click)="delete()">Delete</button>
-                            </td>
-                        </tr>
+                        @for(student of studentList;track student; let i=$index){
+                            <tr>
+                                <td>{{serialNo+i}}</td>
+                                <td>{{student?.name | titlecase}}</td>
+                                <td>{{student?.grade}}</td>
+                                <td>{{student?.org | titlecase}}</td>
+                                <td>
+                                    @for (skill of student?.skills; track skill; let last = $last) {
+                                       {{ skill | titlecase }}<span *ngIf="!last">, </span>
+                                      }
+                                </td>
+                                <td>{{student?.createdOn | date:'dd-MM-yyyy HH:mm' }}</td>
+                                <td>{{student?.updatedOn | date:'dd-MM-yyyy HH:mm' }}</td>
+                                <td class="d-flex">
+                                    <button class="btn btn-outline-dark p-1 m-1" (click)="edit(student)">Edit</button>
+                                    <button class="btn btn-outline-dark p-1 m-1" (click)="delete(student)">Delete</button>
+                                </td>
+                            </tr>
+                        }
                       </table>
                 </div>
             </div>

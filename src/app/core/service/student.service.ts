@@ -35,9 +35,9 @@ export class StudentService {
   }
 
   updateStudentData(payload: any): Observable<any> {
-    const url = `${this.baseUrl}/student/update;`
+    const url = `${this.baseUrl}/student/update`
 
-    return this.http.post(url,payload).pipe(
+    return this.http.put(url,payload).pipe(
       catchError((error) => {
         console.log('Error while updating the student data');
         return throwError(() => error)

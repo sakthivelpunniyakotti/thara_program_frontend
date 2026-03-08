@@ -138,6 +138,7 @@ getConfigList() {
     modelRef.content?.onClose.subscribe((result: any) => {
       console.log(result,'model response');
       if(result == 'Y') {
+        this.loaderService.show()
         this.commonService.deleteConfigData(config?.id)
         .subscribe({
           next: (res: any) => {

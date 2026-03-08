@@ -2,9 +2,12 @@ import { Component } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { MultiSelectComponent } from '../../shared/reusableComponens/multi-select/multi-select.component';
 import { ModalModule, BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { MODALCSS } from '../../shared/reusableComponens/enums/toastType';
+import { MODALCSS, TOAST_TYPES } from '../../shared/reusableComponens/enums/toastType';
 import { initialState } from '../../shared/reusableComponens/enums/toastType';
 import { AdminModalComponent } from '../../shared/reusableComponens/modal/admin-modal/admin-modal.component';
+import { LoaderService } from '../../core/service/loader.service';
+import { CommonService } from '../../core/service/common.service';
+import { AdminService } from '../../core/service/admin.service';
 
 @Component({
   selector: 'app-admin-master',
@@ -20,7 +23,12 @@ export class AdminMasterComponent {
 
 
 
-  constructor(private bsModal: BsModalService){
+  constructor(
+    private bsModal: BsModalService,
+    private loaderService: LoaderService,
+    private commonService: CommonService,
+    private adminService: AdminService
+  ){
   }
 
   // for adding admin and subadmin
@@ -31,10 +39,31 @@ export class AdminMasterComponent {
       popUpType:'add',
       data: {}
     }
-    this.bsModal.show(AdminModalComponent,{
+  const modalref = this.bsModal.show(AdminModalComponent,{
       initialState,
       class: MODALCSS.CENTER
     });
+
+    modalref.content?.onClose.subscribe((result: any) => {
+      this.getAllAdminList();
+    })
+  }
+
+  adminList: any []=[];
+  getAllAdminList() {
+    this.loaderService.show();
+
+    this.adminService.getAllAdminData()
+    .subscribe({
+      next: (res: any) => {
+        this.adminList = res?.responseBody;
+        this.loaderService.hide();
+      },
+      error: (erroe: any) => {
+        this.loaderService.hide();
+        this.commonService.show('failed to fetch the admin list',TOAST_TYPES.ERROR);
+      }
+    })
   }
 
   // for editing
