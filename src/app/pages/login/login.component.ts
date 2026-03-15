@@ -113,15 +113,20 @@ export class LoginComponent implements OnInit {
 
         // store the screen access to the local storage.
         this.loaderService.hide();
-        this.router.navigateByUrl('/dashboard');
+        this.router.navigateByUrl('/workboard');
         const userDetails = JSON.stringify(res?.responseBody[0]);
         sessionStorage.setItem('userDetails',userDetails);
         this.commonService.show('Login successful',TOAST_TYPES.SUCCESS);
       },
       error:(err:any) => {
-        this.loaderService.hide();
-        console.log(err,'error');
-        this.commonService.show(err?.error?.errorMsg?.errors[0]?.msg,TOAST_TYPES.ERROR);
+        if(err?.error?.statusCode == '400') {
+          this.loaderService.hide();
+          console.log(err,'error');
+          this.commonService.show(err?.error?.errorMsg?.errors[0]?.msg,TOAST_TYPES.ERROR);
+        } else if(err?.error?.statusCode == '401') {
+          this.loaderService.hide();
+          this.commonService.show(err?.error?.statusMsg + " " + err?.error?.statusDesc,TOAST_TYPES.ERROR);
+        }
       }
     })
   }

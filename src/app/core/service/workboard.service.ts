@@ -19,7 +19,7 @@ export class WorkboardService {
     return this.http.post(url,payload).pipe(
           catchError((error) => {
             console.error('Error in the getting task history',error);
-            return throwError(() => error);
+            return throwError(() => error.error);
           })
         )
   }
@@ -29,7 +29,7 @@ export class WorkboardService {
     return this.http.put(url,payload).pipe(
           catchError((error) => {
             console.error('Error in the updating task history',error);
-            return throwError(() => error);
+            return throwError(() => error.error);
           })
         )
   }

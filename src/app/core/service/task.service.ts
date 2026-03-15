@@ -76,7 +76,7 @@ export class TaskService {
   return this.http.get(`${this.baseUrl}/task/filter`, { params }).pipe(
     catchError((error) => {
       console.error('Error while fetching filtered task master list', error);
-      return throwError(() => error);
+      return throwError(() => error.error);
     })
   );
 }

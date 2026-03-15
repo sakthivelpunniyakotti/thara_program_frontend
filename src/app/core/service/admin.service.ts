@@ -13,9 +13,9 @@ export class AdminService {
   
   constructor(private http: HttpClient) { }
 
-  getAllAdminData(): Observable<any> {
+  getAllAdminData(payload: any): Observable<any> {
       const url = `${this.baseUrl}/admin/data`;
-      return this.http.get(url).pipe(
+      return this.http.post(url,payload).pipe(
         catchError((error) => {
             console.log('Error while getting the admin data');
             return throwError(() => error)
@@ -29,7 +29,7 @@ export class AdminService {
       return this.http.post(url,payload).pipe(
         catchError((error) => {
           console.log('Error while posting the admin data');
-          return throwError(() => error)
+          return throwError(() => error.error)
         })
       )
     }

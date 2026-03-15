@@ -17,34 +17,40 @@ interface icons {
 export class SidebarComponent implements OnInit{
 
   //back api structure
-  icons : icons[] = [{
-    name: 'Dashboard',
-    imgUrl: 'dashboard.svg',
-    navigateUrl: 'dashboard'
-  },{
-    name: 'Admin',
-    imgUrl: 'adminmaster.svg',
-    navigateUrl: 'admin'
-  },{
-    name: 'Dev',
-    imgUrl: 'dev.svg',
-    navigateUrl: 'dev'
-  },{
-    name: 'Student Master',
-    imgUrl: 'studentmaster.svg',
-    navigateUrl: 'student-master'
-  },{
-    name: 'Workboard',
-    imgUrl: 'workboard.svg',
-    navigateUrl: 'workboard'
-  },{
-    name: 'Task',
-    imgUrl: 'task.svg',
-    navigateUrl: 'task-manager'
-  }];
+  icons : any;
+  // icons : icons[] = [{
+  //   name: 'Dashboard',
+  //   imgUrl: 'dashboard.svg',
+  //   navigateUrl: 'dashboard'
+  // },{
+  //   name: 'Admin',
+  //   imgUrl: 'adminmaster.svg',
+  //   navigateUrl: 'admin'
+  // },{
+  //   name: 'Dev',
+  //   imgUrl: 'dev.svg',
+  //   navigateUrl: 'dev'
+  // },{
+  //   name: 'Student Master',
+  //   imgUrl: 'studentmaster.svg',
+  //   navigateUrl: 'student-master'
+  // },{
+  //   name: 'Workboard',
+  //   imgUrl: 'workboard.svg',
+  //   navigateUrl: 'workboard'
+  // },{
+  //   name: 'Task',
+  //   imgUrl: 'task.svg',
+  //   navigateUrl: 'task-manager'
+  // }];
+
+  userDetails: any;
 
   ngOnInit(): void {
     // restore the screen access from the local storage.
+    this.userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '');
+    console.log(this.userDetails);
+    this.icons = this.userDetails?.screenAccess
   }
 
 

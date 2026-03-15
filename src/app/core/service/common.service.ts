@@ -79,14 +79,29 @@ export class CommonService {
     )
   }
 
-  // get config data
-  getConfigData(fullData: boolean): Observable<any> {
+  // get config data - without pagination
+//   getConfigData(fullData: boolean): Observable<any> {
+//   const url = `${this.baseUrl}/config/data`;
+
+//   const params = new HttpParams()
+//     .set('fullData', fullData.toString());
+
+//   return this.http.get(url, { params }).pipe(
+//     catchError((error) => {
+//       console.error('Error in the config data', error);
+//       return throwError(() => error);
+//     })
+//   );
+// }
+
+//  get config data with pagination
+ getConfigData(fullData: boolean, payload: any): Observable<any> {
   const url = `${this.baseUrl}/config/data`;
 
   const params = new HttpParams()
     .set('fullData', fullData.toString());
 
-  return this.http.get(url, { params }).pipe(
+  return this.http.post(url,payload ,{ params }).pipe(
     catchError((error) => {
       console.error('Error in the config data', error);
       return throwError(() => error);
@@ -131,10 +146,23 @@ export class CommonService {
   );
 }
 
+// without pagination
  getFilteredConfig(filter: string): Observable<any> {
     const url = `${this.baseUrl}/config/filter/${filter}`;
 
     return this.http.get(url).pipe(
+      catchError((error) => {
+        console.error('Error while fetching filtered config', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  // with pagination 
+ getFilteredConfigPagination(filter: string, payload: any): Observable<any> {
+    const url = `${this.baseUrl}/config/filter/${filter}`;
+
+    return this.http.post(url,payload).pipe(
       catchError((error) => {
         console.error('Error while fetching filtered config', error);
         return throwError(() => error);

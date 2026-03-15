@@ -38,6 +38,9 @@ userDetails: any;
 ngOnInit(): void {
   this.getSubject();
   this.userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '');
+  if(this.userDetails) {
+    this.gradeFilter = Number(this.userDetails?.grade)
+  }
   
 }
 
@@ -74,6 +77,7 @@ getConfigHistory() {
 subjects: any;
 getSubject() {
   this.loaderService.show();
+  
   this.commonService.getFilteredConfig('subject')
   .subscribe({
     next: (res: any) => {
@@ -100,9 +104,25 @@ onSubjectChange() {
 configKey:any;
 //get task history
 configTaskHistory(): void {
-  console.log('updating config history')
    this.configKey = `${this.subjectFilter}LastTaskId`;
-  if(!this.studentTaskHistoryjson?.taskHistoryJson[this.configKey]) {
+  //  
+      const unLockedTask = this.workboardList.filter((task: any) => {
+        if(task?.id >= this.studentTaskHistoryjson?.taskHistoryJson[this.configKey]){
+          return task
+        }
+      });
+
+      let allow;
+
+      if(this.workboardList.length == unLockedTask.length ) {
+        this.studentTaskHistoryjson.taskHistoryJson[this.configKey] = this.workboardList[0]?.id;
+        allow = true
+      } else{
+        allow = false
+      }
+      console.log(this.studentTaskHistoryjson?.taskHistoryJson[this.configKey])
+  // 
+  if(!this.studentTaskHistoryjson?.taskHistoryJson[this.configKey] || allow) {
     this.studentTaskHistoryjson.taskHistoryJson[this.configKey]=this.workboardList[0].id;
     // update config history
     console.log('task history updating');
@@ -117,8 +137,22 @@ configTaskHistory(): void {
       next: (res: any) => {
         this.loaderService.hide();
         console.log(res,'res');
+
+        console.log(this.configKey)
+      const unLockedTask = this.workboardList.find((task: any) => {
+        console.log(task?.id);
+        console.log(this.studentTaskHistoryjson?.taskHistoryJson[this.configKey])
+        return (task?.id >= this.studentTaskHistoryjson?.taskHistoryJson[this.configKey])
+      })
+
+      console.log(unLockedTask)
+      if(this.workboardList.length == unLockedTask.length ) {
+        this.studentTaskHistoryjson.taskHistoryJson[this.configKey] = this.workboardList[0]?.id
+      }
+      console.log(this.studentTaskHistoryjson?.taskHistoryJson[this.configKey])
       },
       error: (error: any) => {
+
         console.log(error);
         this.loaderService.hide();
       }
@@ -150,13 +184,15 @@ getTaskTableData() {
           if(res?.statusCode == '200' ) {
             this.workboardList = res?.responseBody;
             this.getConfigHistory();
-
-            
           }
           this.loaderService.hide();
       },
       error: (error: any) => {
         console.log(error);
+        if(error?.statusCode == 404) {
+          this.commonService.show("No task found",TOAST_TYPES.ERROR);
+          this.workboardList = [];
+        }
         this.workboardList = [];
         this.loaderService.hide();
       }

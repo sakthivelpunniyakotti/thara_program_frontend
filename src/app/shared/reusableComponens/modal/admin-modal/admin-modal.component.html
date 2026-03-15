@@ -17,20 +17,61 @@
                         <input type="text" class="form-control" placeholder="Enter Password" formControlName="password">
                         <button class="btn btn-outline-secondary"><i class="bi bi-eye-slash-fill"></i></button>
                     </div>
+                    <div class="text-danger mt-1"
+     *ngIf="adminForm.get('password')?.touched && adminForm.get('password')?.invalid">
+
+  <small *ngIf="adminForm.get('password')?.errors?.['required']">
+    Password is required
+  </small>
+
+  <small *ngIf="adminForm.get('password')?.errors?.['minlength']">
+      Password must be at least 
+    {{ adminForm.get('password')?.errors?.['minlength']?.requiredLength }} characters
+  </small>
+
+  <small *ngIf="adminForm.get('password')?.errors?.['maxlength']">
+    Password must be at least 
+    {{ adminForm.get('password')?.errors?.['maxlength']?.requiredLength }} characters
+  </small>
+
+  <small *ngIf="adminForm.get('password')?.errors?.['pattern']">
+    Password must contain uppercase, lowercase, number, and symbol
+  </small>
+
+</div>
                     <label class="form-label">Confirm Password</label>
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Confirm Password" formControlName="cPassword">
                         <button class="btn btn-outline-secondary"><i class="bi bi-eye-slash"></i></button>
                     </div>
+                    <div class="text-danger mt-1"
+ *ngIf="adminForm.get('cPassword')?.touched">
+
+  <small *ngIf="adminForm.get('cPassword')?.errors?.['required']">
+    Confirm password is required
+  </small>
+
+  <small *ngIf="adminForm.get('cPassword')?.value !== adminForm.get('password')?.value">
+    Password and Confirm Password must match
+  </small>
+
+</div>
                 </div>
                 <div class="col">
                     <label class="form-label">Role</label>
                     <select formControlName="role"  class="form-select" aria-label="Default select example">
                         <option value="">Select Role</option>
-                        
+                        @for(role of roles; track role){
+                            <option [value]="role.value">{{role.value | titlecase}}</option>
+                        }
                     </select>
                     <label class="form-label">Organisation</label>
-                    <input class="form-control" type="text" placeholder="Enter Org" formControlName="org">
+                    <select formControlName="org"  class="form-select" aria-label="Default select example">
+                        <option value="">Select Organisation</option>
+                        @for(org of organization; track org){
+                            <option [value]="org.value">{{org.value | titlecase}}</option>
+                        }
+                    </select>
                 </div>
             </div>
         </div>
@@ -38,8 +79,8 @@
 </div>
 
 <div class="modal-footer text-light">
-  <button *ngIf="popUpType == 'add'" class="btn btn-outline-light">Save</button>
-  <button *ngIf="popUpType == 'edit'" class="btn btn-outline-light">Update</button>
+  <button *ngIf="popUpType == 'add'" (click)="save()" [disabled]="adminForm.invalid || !passwordMatch()" class="btn btn-outline-light">Save</button>
+  <button *ngIf="popUpType == 'edit'" (click)="update()" [disabled]="adminForm.invalid || !passwordMatch()" class="btn btn-outline-light">Update</button>
   <button class="btn btn-outline-light" (click)="hide()">Close</button>
 </div>
 </div>
@@ -51,7 +92,7 @@
 </div>
 
 <div class="modal-footer d-flex align-item-center justify-content-around text-light">
-   <button class="btn btn-outline-light">Yes</button>
+   <button class="btn btn-outline-light" (click)="delete()">Yes</button>
   <button class="btn btn-outline-light" (click)="hide()">No</button>
 </div>
 </div>

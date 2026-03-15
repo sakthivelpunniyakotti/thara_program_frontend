@@ -34,20 +34,34 @@
                             <th>Name</th>
                             <th>Role</th>
                             <th>Org</th>
+                            <th>Created On</th>
+                            <th>Updated On</th>
                             <th style="text-align: center;width: 100px;">Action</th>
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Tom</td>
-                            <td>Sub Admin</td>
-                            <td>Thara</td>
-                            <td class="d-flex">
-                                <button class="btn btn-outline-dark p-1 m-1" (click)="edit()">Edit</button>
-                                <button class="btn btn-outline-dark p-1 m-1" (click)="delete()">Delete</button>
-                            </td>
-                        </tr>
+                        @for(admin of adminList; track admin; let i=$index){
+                            <tr>
+                                <td>{{serialNo+i}}</td>
+                                <td>{{admin?.name | titlecase}}</td>
+                                <td>{{admin?.type | titlecase}}</td>
+                                <td>{{admin?.org | titlecase}}</td>
+                                <td>{{admin?.createdOn | date:'dd-MM-yyyy HH:mm'}}</td>
+                                <td>{{admin?.updatedOn | date:'dd-MM-yyyy HH:mm'}}</td>
+                                <td class="d-flex">
+                                    <button class="btn btn-outline-dark p-1 m-1" (click)="edit(admin)">Edit</button>
+                                    <button class="btn btn-outline-dark p-1 m-1" (click)="delete(admin)">Delete</button>
+                                </td>
+                            </tr>
+                        }
                       </table>
                 </div>
+                <!-- pagination -->
+         <div class="row m-1">
+            <div class="col d-flex align-item-center justify-content-end">
+                <button class="btn btn-light"><img src="/assets/icons/caret-left.svg" alt=""></button>
+                 <button class="btn bg-light m-1">1</button>
+                 <button class="btn btn-light"><img src="/assets/icons/caret-right.svg" alt=""></button>
+            </div>
+         </div>
             </div>
         </div>
         

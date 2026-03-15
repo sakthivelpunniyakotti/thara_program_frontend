@@ -69,7 +69,11 @@ export class ModalComponent {
   configData:any;
   getConfigData() {
     this.loaderSerive.show();
-    this.commonService.getConfigData(true)
+    const payload = {
+      page: 1,
+      limit: 8
+    }
+    this.commonService.getConfigData(true,payload)
     .subscribe({
       next: (res: any) => {
         this.configData = res?.responseBody;

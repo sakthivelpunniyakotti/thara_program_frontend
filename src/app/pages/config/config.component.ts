@@ -25,6 +25,7 @@ export class ConfigComponent implements OnInit {
 serialNo: number = 1;
 filterType: any = 'all';
 searchKey: any = '';
+pageNo: number = 1;
 
 constructor(private bsmodel: BsModalService,private loaderService: LoaderService, private commonService: CommonService){}
 
@@ -32,6 +33,18 @@ constructor(private bsmodel: BsModalService,private loaderService: LoaderService
 ngOnInit(): void {
     this.getConfigList();
     this.getConfigData();
+}
+
+back() {
+  
+    this.pageNo--;
+    this.filterTable();
+  
+}
+
+forward() {
+  this.pageNo++;
+  this.filterTable()
 }
 
 search() {
@@ -56,7 +69,11 @@ search() {
 
 filterTable() {
   this.loaderService.show();
-  this.commonService.getFilteredConfig(this.filterType)
+  const payload = {
+    page: (this.pageNo<=0)?1:this.pageNo ,
+    limit: 7
+  }
+  this.commonService.getFilteredConfigPagination(this.filterType,payload)
   .subscribe({
     next: (res: any) => {
       console.log(res);
@@ -66,6 +83,7 @@ filterTable() {
     error: (error: any) => {
       console.log(error);
       this.loaderService.hide();
+      this.pageNo = 1
     }
   })
 }
@@ -73,7 +91,11 @@ filterTable() {
 filterData:any;
   getConfigData() {
     this.loaderService.show();
-    this.commonService.getConfigData(true)
+    const payload = {
+      page: (this.pageNo<=0)?1:this.pageNo,
+      limit: 7
+    }
+    this.commonService.getConfigData(true,payload)
     .subscribe({
       next: (res: any) => {
         this.filterData = res?.responseBody;
@@ -89,7 +111,11 @@ filterData:any;
 configTableData: any;
 getConfigList() {
   this.loaderService.show();
-  this.commonService.getConfigData(false)
+  const payload = {
+      page: 1,
+      limit: 7
+    }
+  this.commonService.getConfigData(false,payload)
   .subscribe({
     next: (res: any) => {
       this.loaderService.hide();

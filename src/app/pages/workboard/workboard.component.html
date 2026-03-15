@@ -20,6 +20,7 @@
         </div>
         <!-- main container -->
         <div style="cursor: pointer !important;" class="row mb-1 grid-container ">
+          @if(workboardList?.length > 0) {
             @for(workboard of workboardList;track workboard;let i=$index){
              <div class="col position-relative">
   <div (click)="goToMainBoard(workboard,i)"
@@ -51,6 +52,9 @@
   </div>
 </div>
             }
+          } @else {
+           <p class="text-light text-center">No data found </p>  
+          }
         </div>
         <!-- pagination -->
          <div class="row mb-1">

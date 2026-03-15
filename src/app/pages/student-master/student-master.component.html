@@ -38,6 +38,7 @@
                             <th style="width: 100px;">Serial. No</th>
                             <th>Name</th>
                             <th>Grade</th>
+                            <th>Id</th>
                             <th>Org</th>
                             <th>Skill</th>
                             <th>Created On</th>
@@ -49,6 +50,7 @@
                                 <td>{{serialNo+i}}</td>
                                 <td>{{student?.name | titlecase}}</td>
                                 <td>{{student?.grade}}</td>
+                                <td>{{student?.id}}</td>
                                 <td>{{student?.org | titlecase}}</td>
                                 <td>
                                     @for (skill of student?.skills; track skill; let last = $last) {
