@@ -43,16 +43,33 @@ export class StudentMasterComponent implements OnInit{
     this.getAllStudentData();
   }
   
+   back() {
+    this.page--;
+    this.getAllStudentData();
+  
+}
 
+forward() {
+  this.page++;
+  this.getAllStudentData()
+}
+
+  limit: number= 8;
   page: number = 1;
   filterData: any='';
   studentList: any[] = [];
+  totalPage: any
+  pageMultiple: number = 1;
   getAllStudentData() {
+    console.log(this.page,'page')
     const payload = {
-      page: this.page,
-      limit: 8,
+      page:  (this.page<=0)?1:this.page,
+      limit: this.limit,
       filter: this.filterData.toLowerCase(),
       grade: this.gradeFilter
+    }
+    if(this.page<=0) {
+      this.page = 1;
     }
     this.loaderService.show();
 
@@ -61,7 +78,8 @@ export class StudentMasterComponent implements OnInit{
       next: (res: any) =>{
         this.studentList = res.responseBody;
         this.loaderService.hide();
-
+       this.pageMultiple = res?.pagination?.page;
+       this.totalPage = res?.pagination?.totalPages;
       },
       error: (error: any) => {
         this.loaderService.hide();

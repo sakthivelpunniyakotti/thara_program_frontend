@@ -67,17 +67,25 @@ search() {
   })
 }
 
+pageMultiple: number =1;
+totalPage: any;
+limit: number =7;
 filterTable() {
   this.loaderService.show();
   const payload = {
     page: (this.pageNo<=0)?1:this.pageNo ,
-    limit: 7
+    limit: this.limit
   }
+  if(this.pageNo<=0) {
+      this.pageNo = 1;
+    }
   this.commonService.getFilteredConfigPagination(this.filterType,payload)
   .subscribe({
     next: (res: any) => {
       console.log(res);
       this.configTableData = res?.responseBody;
+       this.pageMultiple = res?.pagination?.currentPage;
+        this.totalPage = res?.pagination?.totalPages;
       this.loaderService.hide();
     },
     error: (error: any) => {

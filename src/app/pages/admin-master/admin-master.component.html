@@ -42,7 +42,7 @@
                            </tr>
                            @for(admin of adminList; track admin; let i=$index){
                                <tr>
-                                   <td>{{serialNo+i}}</td>
+                                   <td>{{(serialNo+i)+((pageMultiple - 1)*limit)}}</td>
                                    <td>{{admin?.name | titlecase}}</td>
                                    <td>{{admin?.type | titlecase}}</td>
                                    <td>{{admin?.org | titlecase}}</td>
@@ -62,9 +62,9 @@
                 <!-- pagination -->
          <div class="row m-1">
             <div class="col d-flex align-item-center justify-content-end">
-                <button class="btn btn-light"><img src="/assets/icons/caret-left.svg" alt=""></button>
-                 <button class="btn bg-light m-1">1</button>
-                 <button class="btn btn-light"><img src="/assets/icons/caret-right.svg" alt=""></button>
+                <button class="btn btn-light" (click)="back()" [disabled]="pageMultiple<=1"><img src="/assets/icons/caret-left.svg" alt=""></button>
+                 <button class="btn bg-light m-1">{{pageMultiple}}</button>
+                 <button class="btn btn-light" (click)="forward()" [disabled] = 'totalPage == pageMultiple' ><img src="/assets/icons/caret-right.svg" alt=""></button>
             </div>
          </div>
             </div>

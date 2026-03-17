@@ -23,7 +23,7 @@
         <div style="cursor: pointer !important;" class="row mb-1 grid-container ">
           @if(workboardList?.length > 0) {
             @for(workboard of workboardList;track workboard;let i=$index){
-             <div class="col position-relative">
+             <div class="col-3 mt-1 position-relative">
   <div (click)="goToMainBoard(workboard,i)"
     class="bg-light border border-dark rounded p-3 lesson-card"
     [class.locked]="workboard?.id > studentTaskHistoryjson?.taskHistoryJson[configKey]"

@@ -264,3 +264,7 @@ table, th, td {
   border-radius: 8px;
   padding: 2px 4px;
 }
+
+.disabled {
+  cursor: not-allowed !important;
+}

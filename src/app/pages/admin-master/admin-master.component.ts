@@ -47,6 +47,18 @@ export class AdminMasterComponent implements OnInit{
     this.getAllAdminList();
   }
 
+ back() {
+  
+    this.pageNo--;
+    this.getAllAdminList();
+  
+}
+
+forward() {
+  this.pageNo++;
+  this.getAllAdminList()
+}
+
   filterData: any = '';
   roles:any;
   getRole():any{
@@ -80,21 +92,29 @@ export class AdminMasterComponent implements OnInit{
       this.getAllAdminList()
     })
   }
-
+  limit: number =8;
+  pageNo: number = 1;
+  pageMultiple: number =1;
   adminList: any []=[];
+  totalPage: any;
   getAllAdminList() {
     this.loaderService.show();
     const payload = {
-      page: 1,
-      limit: 8,
+      page: (this.pageNo<=0)?1:this.pageNo ,
+      limit: this.limit,
       filter:this.filterData.toLowerCase(),
       role: this.roleFilter.toLowerCase()
+    }
+     if(this.pageNo<=0) {
+      this.pageNo = 1;
     }
     this.adminService.getAllAdminData(payload)
     .subscribe({
       next: (res: any) => {
         this.adminList = res?.responseBody;
         this.loaderService.hide();
+        this.pageMultiple = res?.pagination?.currentPage;
+        this.totalPage = res?.pagination?.totalPages;
       },
       error: (error: any) => {
         this.loaderService.hide();
