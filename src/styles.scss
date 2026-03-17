@@ -203,14 +203,18 @@ ul {
 }
 
 .scroll-box {
-  border-radius: 10px;   /* makes edges rounded */
-  overflow: hidden;      /* REQUIRED */
+  border-radius: 10px;
+  overflow: hidden;   /* keep for border clipping */
 }
 
 .round-border{
     border-radius: 50px;
     border-style: solid;
     border-width: medium;
+}
+
+.pointer{
+  cursor: context-menu !important;
 }
 
 .w-20{
@@ -244,4 +248,19 @@ table, th, td {
 }
 
 
- 
+// tooltip
+.mat-mdc-tooltip {
+  --mdc-plain-tooltip-container-color: #333; /* background */
+  --mdc-plain-tooltip-supporting-text-color: #fff; /* text color */
+  font-size: 12px;
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+
+.custom-tooltip {
+  background-color: #1e1e1e !important;
+  color: #fff !important;
+  font-size: 13px;
+  border-radius: 8px;
+  padding: 2px 4px;
+}

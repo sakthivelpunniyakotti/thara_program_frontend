@@ -1,4 +1,4 @@
-<div class="d-flex">
+<div class="d-flex pointer">
     <!-- sidebar -->
      <app-sidebar></app-sidebar>
      <!-- student -->
@@ -16,7 +16,7 @@
                 <div class="filter-tile bg-light border border-dark rounded d-flex">
                     <!-- grade filter -->
                      <div class="round-border m-2 w-20">
-                        <app-multi-select [placeholder]="'Select Grade'"></app-multi-select>
+                        <app-multi-select [options]="grades" (selectedData)="onGradeSelect($event)" [placeholder]="'Select Grade'"></app-multi-select>
                      </div>
                      <!-- subject filter -->
                      <!-- <div class="round-border m-2 w-20">
@@ -24,7 +24,7 @@
                      </div> -->
                     <!-- input search -->
                   <div class="rounder-border m-2 w-20">
-                    <input class="input-border" placeholder="Search..." type="text">
+                    <input class="input-border" (keydown.enter)="getAllStudentData()" placeholder="Search..."  [(ngModel)]="filterData" type="text">
                   </div>
                 </div>
             </div>
@@ -33,40 +33,51 @@
             <div class="col">
                 <div class="main-tile bg-light border border-dark rounded d-flex align-item-center justify-content-center">
                     <!-- student list - table -->
-                      <table  style="width: 95%;">
-                        <tr>
-                            <th style="width: 100px;">Serial. No</th>
-                            <th>Name</th>
-                            <th>Grade</th>
-                            <th>Id</th>
-                            <th>Org</th>
-                            <th>Skill</th>
-                            <th>Created On</th>
-                            <th>Update On</th>
-                            <th style="text-align: center;width: 100px;">Action</th>
-                        </tr>
-                        @for(student of studentList;track student; let i=$index){
-                            <tr>
-                                <td>{{serialNo+i}}</td>
-                                <td>{{student?.name | titlecase}}</td>
-                                <td>{{student?.grade}}</td>
-                                <td>{{student?.id}}</td>
-                                <td>{{student?.org | titlecase}}</td>
-                                <td>
-                                    @for (skill of student?.skills; track skill; let last = $last) {
-                                       {{ skill | titlecase }}<span *ngIf="!last">, </span>
-                                      }
-                                </td>
-                                <td>{{student?.createdOn | date:'dd-MM-yyyy HH:mm' }}</td>
-                                <td>{{student?.updatedOn | date:'dd-MM-yyyy HH:mm' }}</td>
-                                <td class="d-flex">
-                                    <button class="btn btn-outline-dark p-1 m-1" (click)="edit(student)">Edit</button>
-                                    <button class="btn btn-outline-dark p-1 m-1" (click)="delete(student)">Delete</button>
-                                </td>
-                            </tr>
-                        }
-                      </table>
+                     @if(studentList.length > 0) {
+                         <table  style="width: 95%;">
+                           <tr>
+                               <th style="width: 100px;">Serial. No</th>
+                               <th>Name</th>
+                               <th>Grade</th>
+                               <th>Id</th>
+                               <th>Org</th>
+                               <th>Skill</th>
+                               <th>Created On</th>
+                               <th>Update On</th>
+                               <th style="text-align: center;width: 100px;">Action</th>
+                           </tr>
+                           @for(student of studentList;track student; let i=$index){
+                               <tr>
+                                   <td>{{serialNo+i}}</td>
+                                   <td>{{student?.name | titlecase}}</td>
+                                   <td>{{student?.grade}}</td>
+                                   <td>{{student?.id}}</td>
+                                   <td>{{student?.org | titlecase}}</td>
+                                   <td>
+                                       @for (skill of student?.skills; track skill; let last = $last) {
+                                          {{ skill | titlecase }}<span *ngIf="!last">, </span>
+                                         }
+                                   </td>
+                                   <td>{{student?.createdOn | date:'dd-MM-yyyy HH:mm' }}</td>
+                                   <td>{{student?.updatedOn | date:'dd-MM-yyyy HH:mm' }}</td>
+                                   <td class="d-flex">
+                                       <button class="btn btn-outline-dark p-1 m-1" (click)="edit(student)">Edit</button>
+                                       <button class="btn btn-outline-dark p-1 m-1" (click)="delete(student)">Delete</button>
+                                   </td>
+                               </tr>
+                           }
+                         </table>
+                     } @else {
+                        no data found
+                     }
                 </div>
+                 <div class="row m-1">
+            <div class="col d-flex align-item-center justify-content-end">
+                <button class="btn btn-light"><img src="/assets/icons/caret-left.svg" alt=""></button>
+                 <button class="btn bg-light m-1">1</button>
+                 <button class="btn btn-light"><img src="/assets/icons/caret-right.svg" alt=""></button>
+            </div>
+         </div>
             </div>
         </div> 
       </div>

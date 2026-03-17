@@ -1,4 +1,4 @@
-<div class="d-flex">
+<div class="d-flex pointer">
     <!-- side bar -->
     <app-sidebar></app-sidebar>
     <!-- admin main container -->
@@ -16,10 +16,10 @@
                 <div class="filter-tile bg-light border border-dark rounded d-flex">
                     <!-- role filter -->
                   <div class="round-border m-2 w-20">
-                    <app-multi-select></app-multi-select>
+                    <app-multi-select [options]="roles" (selectedData)="onRoleSelect($event)" [placeholder]="'Select Role'"></app-multi-select>
                   </div>
                   <div class="rounder-border m-2 w-20">
-                    <input class="input-border" placeholder="Search" type="text">
+                    <input class="input-border" (keydown.enter)="getAllAdminList()" [(ngModel)]="filterData" placeholder="Search" type="text">
                   </div>
                 </div>
             </div>
@@ -28,31 +28,36 @@
             <div class="col">
                 <div class="main-tile bg-light border border-dark rounded d-flex align-item-center justify-content-center">
                     <!-- admin list - table -->
-                      <table  style="width: 95%;">
-                        <tr>
-                            <th style="width: 100px;">Serial. No</th>
-                            <th>Name</th>
-                            <th>Role</th>
-                            <th>Org</th>
-                            <th>Created On</th>
-                            <th>Updated On</th>
-                            <th style="text-align: center;width: 100px;">Action</th>
-                        </tr>
-                        @for(admin of adminList; track admin; let i=$index){
-                            <tr>
-                                <td>{{serialNo+i}}</td>
-                                <td>{{admin?.name | titlecase}}</td>
-                                <td>{{admin?.type | titlecase}}</td>
-                                <td>{{admin?.org | titlecase}}</td>
-                                <td>{{admin?.createdOn | date:'dd-MM-yyyy HH:mm'}}</td>
-                                <td>{{admin?.updatedOn | date:'dd-MM-yyyy HH:mm'}}</td>
-                                <td class="d-flex">
-                                    <button class="btn btn-outline-dark p-1 m-1" (click)="edit(admin)">Edit</button>
-                                    <button class="btn btn-outline-dark p-1 m-1" (click)="delete(admin)">Delete</button>
-                                </td>
-                            </tr>
-                        }
-                      </table>
+                     @if(adminList.length > 0) {
+
+                         <table  style="width: 95%;">
+                           <tr>
+                               <th style="width: 100px;">Serial. No</th>
+                               <th>Name</th>
+                               <th>Role</th>
+                               <th>Org</th>
+                               <th>Created On</th>
+                               <th>Updated On</th>
+                               <th style="text-align: center;width: 100px;">Action</th>
+                           </tr>
+                           @for(admin of adminList; track admin; let i=$index){
+                               <tr>
+                                   <td>{{serialNo+i}}</td>
+                                   <td>{{admin?.name | titlecase}}</td>
+                                   <td>{{admin?.type | titlecase}}</td>
+                                   <td>{{admin?.org | titlecase}}</td>
+                                   <td>{{admin?.createdOn | date:'dd-MM-yyyy HH:mm'}}</td>
+                                   <td>{{admin?.updatedOn | date:'dd-MM-yyyy HH:mm'}}</td>
+                                   <td class="d-flex">
+                                       <button class="btn btn-outline-dark p-1 m-1" (click)="edit(admin)">Edit</button>
+                                       <button class="btn btn-outline-dark p-1 m-1" (click)="delete(admin)">Delete</button>
+                                   </td>
+                               </tr>
+                           }
+                         </table>
+                     } @else {
+                        no data found
+                     }
                 </div>
                 <!-- pagination -->
          <div class="row m-1">

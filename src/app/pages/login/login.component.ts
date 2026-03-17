@@ -40,7 +40,19 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.getGrade();
     this.getRole();
-    
+    this.resetSessions();
+  }
+
+  resetSessions() {
+    sessionStorage.removeItem('selectedSubject')
+  }
+
+  toggleEye(event: HTMLInputElement) {
+    if(event.type == 'text') {
+      event.type = 'password'
+    } else {
+      event.type = 'text'
+    }
   }
 
   grades:any;
@@ -145,9 +157,14 @@ export class LoginComponent implements OnInit {
         this.commonService.show('Login successful',TOAST_TYPES.SUCCESS);
       },
       error:(err:any) => {
-        this.loaderService.hide();
-        this.commonService.show(err?.error?.errorMsg?.errors[0]?.msg,TOAST_TYPES.ERROR);
-        console.log(err);
+         if(err?.error?.statusCode == '400') {
+          this.loaderService.hide();
+          console.log(err,'error');
+          this.commonService.show(err?.error?.errorMsg?.errors[0]?.msg,TOAST_TYPES.ERROR);
+        } else if(err?.error?.statusCode == '401') {
+          this.loaderService.hide();
+          this.commonService.show(err?.error?.statusMsg + " " + err?.error?.statusDesc,TOAST_TYPES.ERROR);
+        }
       }
     })
   }

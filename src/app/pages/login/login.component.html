@@ -1,5 +1,5 @@
 
-<section class="vh-100 custom-center custome-background">
+<section class="vh-100 custom-center custome-background pointer">
 
     <div class="container w-25 rounded d-flex align-item-center justify-content-center flex-column bg-light border border-secondary">
          <div class="row">
@@ -46,7 +46,11 @@
                                 <input type="text"  class="form-control" [ngClass]="{error:othersForm.get('userName')?.invalid && othersForm.get('userName')?.touched}" formControlName="userName">
                                 <label for="userName" class="form-label">Password</label>
                                 <span class="text-danger">*</span>
-                                <input type="text" class="form-control" [ngClass]="{error:othersForm.get('password')?.invalid && othersForm.get('password')?.touched}" formControlName="password">
+                                <div class="input-group">
+                                <input #passwordInput type="password" [ngClass]="{error:othersForm.get('password')?.invalid && othersForm.get('password')?.touched}" class="form-control" placeholder="Enter Password" formControlName="password">
+                                <button type="button" (click)="toggleEye(passwordInput)" class="btn btn-outline-secondary"><i [ngClass]="{'bi-eye':passwordInput.type == 'text'}" class="bi bi-eye-slash"></i></button>
+                                </div>
+                                <!-- <input type="password" class="form-control"  formControlName="password"> -->
                                 <label for="userName" class="form-label">Role</label>
                                 <span class="text-danger">*</span>
                                  <select class="form-select" aria-label="Default select example" [ngClass]="{error:othersForm.get('role')?.invalid && othersForm.get('role')?.touched}" formControlName="role">

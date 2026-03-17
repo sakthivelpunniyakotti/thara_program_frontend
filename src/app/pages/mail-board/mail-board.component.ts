@@ -165,7 +165,9 @@ submit(event: any) {
       this.wordForm = '';
       this.invalidWord = false;
       this.letters = [];
-      
+      if(this.actualCount >= this.setCount && this.remainingTime!==0) {
+        this.submitTest()
+      }
     } else if(this.word !== typedWord) {
         this.invalidWord=true;
     }
@@ -271,6 +273,7 @@ configTaskHistory(): void {
         console.log(res,'res');
         this.router.navigateByUrl('workboard');
         sessionStorage.removeItem('mailBoardData');
+        sessionStorage.setItem('selectedSubject',this.taskDetails?.subject)
         this.resetData();
       },
       error: (error: any) => {

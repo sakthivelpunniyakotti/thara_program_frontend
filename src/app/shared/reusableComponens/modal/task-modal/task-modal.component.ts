@@ -113,10 +113,10 @@ export class TaskModalComponent implements OnInit{
     const payload = {
       grade: this.taskForm.get('grade')?.value,
       subject: this.taskForm.get('subject')?.value,
-      meaning: this.taskForm.get('meaning')?.value,
+      meaning: this.taskForm.get('meaning')?.value.trim(),
       count: this.taskForm.get('count')?.value,
       timer: this.taskForm.get('timer')?.value,
-      word: this.taskForm.get('word')?.value,
+      word: this.taskForm.get('word')?.value.trim(),
       createdBy: this.userDetails?.name
     }
     console.log(payload,'payload')
@@ -153,8 +153,8 @@ onClose: Subject<any> = new Subject();
       "grade": this.taskForm.get('grade')?.value,
       "count": this.taskForm.get('count')?.value,
       "timer": this.taskForm.get('timer')?.value,
-      "word": this.taskForm.get('word')?.value,
-      "meaning": this.taskForm.get('meaning')?.value,
+      "word": this.taskForm.get('word')?.value.trim(),
+      "meaning": this.taskForm.get('meaning')?.value.trim(),
       "createdBy": this.userDetails?.name,
      }
 

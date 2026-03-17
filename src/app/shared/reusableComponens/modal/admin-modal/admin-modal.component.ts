@@ -110,8 +110,8 @@ export class AdminModalComponent implements OnInit {
       this.loaderService.show();
 
     const payload = {
-      name: this.adminForm.get('name')?.value,
-      password: this.adminForm.get('password')?.value,
+      name: this.adminForm.get('name')?.value.trim(),
+      password: this.adminForm.get('password')?.value.trim(),
       type: this.adminForm.get('role')?.value,
       org: this.adminForm.get('org')?.value,
     }
@@ -153,8 +153,8 @@ export class AdminModalComponent implements OnInit {
 
   if(this.adminForm.get('password')?.value === this.adminForm.get('cPassword')?.value) {
   const payload = {
-     name: this.adminForm.get('name')?.value,
-     password: this.adminForm.get('password')?.value,
+     name: this.adminForm.get('name')?.value.trim(),
+     password: this.adminForm.get('password')?.value.trim(),
      type: this.adminForm.get('role')?.value,
      org: this.adminForm.get('org')?.value,
      id: this.data?.id
@@ -187,6 +187,14 @@ export class AdminModalComponent implements OnInit {
     const cPassword = this.adminForm.get('cPassword')?.value
     
     return password == cPassword
+  }
+
+  toggleEye(event: HTMLInputElement) {
+    if(event.type == 'text') {
+      event.type = 'password'
+    } else {
+      event.type = 'text'
+    }
   }
   
   delete() {

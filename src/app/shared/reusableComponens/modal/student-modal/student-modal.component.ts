@@ -92,7 +92,7 @@ get skillArray() {
 
 save() {
   const payload = {
-    name: this.studentsForm.get('name')?.value,
+    name: (this.studentsForm.get('name')?.value).trim(),
     type: this.studentsForm.get('role')?.value,
     grade: this.studentsForm.get('grade')?.value,
     skills: this.skillList,
@@ -123,7 +123,7 @@ update() {
   const payload = {
      type: this.studentsForm.get('role')?.value,
      grade: this.studentsForm.get('grade')?.value,
-     name: this.studentsForm.get('name')?.value,
+     name: this.studentsForm.get('name')?.value.trim(),
      skills: this.skillList,
      org: this.studentsForm.get('org')?.value,
      id: this.data?.id

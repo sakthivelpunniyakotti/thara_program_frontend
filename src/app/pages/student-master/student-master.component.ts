@@ -10,11 +10,13 @@ import { CommonService } from '../../core/service/common.service';
 import { StudentService } from '../../core/service/student.service';
 import { CommonModule } from '@angular/common';
 import { error } from 'highcharts';
+import { filter } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-student-master',
   standalone: true,
-  imports: [SidebarComponent,MultiSelectComponent,CommonModule],
+  imports: [SidebarComponent,MultiSelectComponent,CommonModule,FormsModule],
   templateUrl: './student-master.component.html',
   styleUrl: './student-master.component.css'
 })
@@ -31,14 +33,30 @@ export class StudentMasterComponent implements OnInit{
 
   ngOnInit(): void {
       this.getAllStudentData();
+      this.getGrade()
+  }
+
+  gradeFilter: any =''
+  onGradeSelect(event: any) {
+    this.gradeFilter = event;
+    console.log(this.gradeFilter)
+    this.getAllStudentData();
   }
   
 
+  page: number = 1;
+  filterData: any='';
   studentList: any[] = [];
   getAllStudentData() {
+    const payload = {
+      page: this.page,
+      limit: 8,
+      filter: this.filterData.toLowerCase(),
+      grade: this.gradeFilter
+    }
     this.loaderService.show();
 
-    this.studentService.getAllStudentData()
+    this.studentService.getAllStudentData(payload)
     .subscribe({
       next: (res: any) =>{
         this.studentList = res.responseBody;
@@ -118,6 +136,21 @@ export class StudentMasterComponent implements OnInit{
             this.commonService.show('Failed to delete the record',TOAST_TYPES.ERROR);
           }
         })
+      }
+    })
+  }
+
+  grades:any;
+  getGrade():any {
+    this.loaderService.show();
+    this.commonService.getGrade()
+    .subscribe({
+      next: (res) => {
+        this.grades = res?.responseBody;
+        this.loaderService.hide();
+      },
+      error: (err:any) => {
+        this.loaderService.hide();
       }
     })
   }

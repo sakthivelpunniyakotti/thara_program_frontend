@@ -36,6 +36,7 @@ constructor(
 
 userDetails: any;
 ngOnInit(): void {
+  
   this.getSubject();
   this.userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '');
   if(this.userDetails) {
@@ -84,7 +85,12 @@ getSubject() {
       console.log(res);
       this.subjects = res?.responseBody;
       if(this.subjects?.length > 0 ) {
-        this.subjectFilter = this.subjects[0]?.value;
+        const filter = sessionStorage.getItem('selectedSubject');
+            if(filter) {
+            this.subjectFilter = filter
+           } else {
+            this.subjectFilter = this.subjects[0]?.value;
+           }
         this.getTaskTableData();
         
       }

@@ -13,9 +13,20 @@ export class StudentService {
 
   constructor(private http: HttpClient) { }
 
-  getAllStudentData(): Observable<any> {
+  // get
+  getAllStudentDataAll(): Observable<any> {
     const url = `${this.baseUrl}/student/data`;
     return this.http.get(url).pipe(
+      catchError((error) => {
+          console.log('Error while getting the student data');
+          return throwError(() => error)
+       })
+    )
+  }
+
+  getAllStudentData(payload: any): Observable<any> {
+    const url = `${this.baseUrl}/student/data`;
+    return this.http.post(url,payload).pipe(
       catchError((error) => {
           console.log('Error while getting the student data');
           return throwError(() => error)

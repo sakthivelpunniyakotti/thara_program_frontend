@@ -1,4 +1,4 @@
-<div class="d-flex">
+<div class="d-flex pointer">
     <!-- sidebar -->
      <app-sidebar></app-sidebar>
      <!-- workboard -->
@@ -14,6 +14,7 @@
                                 <option [value]="subject?.value">{{subject?.value | titlecase}}</option>
                             }
                         </select>
+                        <!-- <button class="btn">Log out</button> -->
                     </div>
                 </div>
             </div>
@@ -39,7 +40,7 @@
       }
     </div>
     @if(workboard?.id <= studentTaskHistoryjson?.taskHistoryJson[configKey]) {
-        <p>last worked On</p>
+        <!-- <p>last worked On</p> -->
       }
 
     <!-- Lock Overlay -->

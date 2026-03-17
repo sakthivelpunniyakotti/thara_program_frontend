@@ -9,7 +9,9 @@ export class ChartServiceService {
 
   constructor() { }
 
-  pieChart():any{
+  pieChart(data: any):any{
+
+    console.log(data,'ddddddddd')
       this.chartOptions = {
     chart: {
         type: 'pie',
@@ -20,12 +22,10 @@ export class ChartServiceService {
         }
     },
     title: {
-        text: 'Global smartphone shipments market share, Q1 2022'
+        text: `Home work pie chart view for ${data?.name} of grade ${data?.grade}`
     },
     subtitle: {
-        text: 'Source: ' +
-            '<a href="https://www.counterpointresearch.com/global-smartphone-share/"' +
-            'target="_blank">Counterpoint Research</a>'
+        text: ''
     },
     accessibility: {
         point: {
@@ -51,25 +51,25 @@ export class ChartServiceService {
     text: 'Thara',
     href:''
     },
+    exporting: {
+  enabled: true,
+  buttons: {
+    contextButton: {
+      menuItems: [
+        'downloadCSV',
+        'downloadXLS'   // ✅ Excel option
+      ]
+    }
+  }
+},
     series: [{
         type: 'pie',
         name: 'Share',
-        data: [
-            ['Samsung', 23],
-            ['Apple', 18],
-            {
-                name: 'Xiaomi',
-                y: 12,
-                sliced: true,
-                selected: true
-            },
-            ['Oppo*', 9],
-            ['Vivo', 8],
-            ['Others', 30]
-        ]
+        data: data?.data        
     }]
 }
 
+console.log(data)
   return this.chartOptions;
   }
 }

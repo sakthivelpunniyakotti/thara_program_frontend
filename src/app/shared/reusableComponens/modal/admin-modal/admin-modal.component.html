@@ -14,8 +14,8 @@
                     <input class="form-control" type="text" placeholder="Enter Name" formControlName="name">
                     <label class="form-label">Password</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Enter Password" formControlName="password">
-                        <button class="btn btn-outline-secondary"><i class="bi bi-eye-slash-fill"></i></button>
+                        <input #passwordInput type="password" class="form-control" placeholder="Enter Password" formControlName="password">
+                        <button (click)="toggleEye(passwordInput)" class="btn btn-outline-secondary"><i [ngClass]="{'bi-eye':passwordInput.type == 'text'}" class="bi bi-eye-slash"></i></button>
                     </div>
                     <div class="text-danger mt-1"
      *ngIf="adminForm.get('password')?.touched && adminForm.get('password')?.invalid">
@@ -41,8 +41,8 @@
 </div>
                     <label class="form-label">Confirm Password</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Confirm Password" formControlName="cPassword">
-                        <button class="btn btn-outline-secondary"><i class="bi bi-eye-slash"></i></button>
+                        <input #cPasswordInput type="password" class="form-control" placeholder="Confirm Password" formControlName="cPassword">
+                        <button (click)="toggleEye(cPasswordInput)" class="btn btn-outline-secondary"><i [ngClass]="{'bi-eye':cPasswordInput.type == 'text'}" class="bi bi-eye-slash"></i></button>
                     </div>
                     <div class="text-danger mt-1"
  *ngIf="adminForm.get('cPassword')?.touched">

@@ -9,6 +9,7 @@ import { LoaderService } from '../../core/service/loader.service';
 import { CommonService } from '../../core/service/common.service';
 import { AdminService } from '../../core/service/admin.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-master',
@@ -16,7 +17,8 @@ import { CommonModule } from '@angular/common';
   imports: [
     SidebarComponent,
     MultiSelectComponent,
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   templateUrl: './admin-master.component.html',
   styleUrl: './admin-master.component.css'
@@ -35,6 +37,30 @@ export class AdminMasterComponent implements OnInit{
 
   ngOnInit(): void {
       this.getAllAdminList();
+      this.getRole()
+  }
+
+  roleFilter: any =''
+  onRoleSelect(event: any) {
+    this.roleFilter = event;
+    console.log(this.roleFilter)
+    this.getAllAdminList();
+  }
+
+  filterData: any = '';
+  roles:any;
+  getRole():any{
+    this.loaderService.show();
+    this.commonService.getRole()
+    .subscribe({
+      next: (res) => {
+        this.roles = res?.responseBody;
+        this.loaderService.hide();
+      },
+      error: (err: any) => {
+        this.loaderService.hide();
+      }
+    })
   }
 
   // for adding admin and subadmin
@@ -60,7 +86,9 @@ export class AdminMasterComponent implements OnInit{
     this.loaderService.show();
     const payload = {
       page: 1,
-      limit: 8
+      limit: 8,
+      filter:this.filterData.toLowerCase(),
+      role: this.roleFilter.toLowerCase()
     }
     this.adminService.getAllAdminData(payload)
     .subscribe({

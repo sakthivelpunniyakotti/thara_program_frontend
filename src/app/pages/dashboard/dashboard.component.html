@@ -1,12 +1,12 @@
 
 
- <div class="d-flex">
+ <div class="d-flex pointer" >
     <app-sidebar></app-sidebar>
     <!-- admin main container -->
     <div class="container w-100 bg-dark rounded c95-vh my-3">
     <!-- header tile -->
        <div class="header-tile bg-light w-100 rounded d-flex justify-content-between mt-3">
-         <p class="h1 m-0 ps-1 py-2">-----</p>
+         <p class="h1 m-0 ps-1 py-2">{{userDetails?.org | titlecase}}</p>
          <div class="d-block"> 
                <div class="container">
                    <div class="row">
@@ -14,9 +14,9 @@
                           <img class="my-1 me-1 border border-dark rounded-circle" src="/assets/sidebar/studentmaster.svg" alt="" srcset="">
                       </div>
                       <div class="col-9">
-                         <small class="d-block">User Name</small>
-                         <small class="d-block">Admin</small>
-                         <small class="d-block">Logout</small>
+                         <small class="d-block">{{userDetails?.name | titlecase}}</small>
+                         <small class="d-block">{{userDetails?.role | titlecase}}</small>
+                         <small class="d-block" style="cursor: pointer;" (click)="logOut()">Logout</small>
                       </div>
                    </div>
                </div>
@@ -26,79 +26,88 @@
      <div class="sibling-tile">
         <div class="rounded bg-light my-1">
             <p class="h2">Primary</p>
-            <p class="h1">77</p>
+            <p class="h1">{{studentHeadCount?.primary}}</p>
         </div>
         <div class="rounded bg-light m-1">
-            <p class="h2">Secondary</p>
-            <p class="h1">77</p>
+            <p class="h2">Higher & Secondary</p>
+            <p class="h1">{{studentHeadCount?.higherSec}}</p>
         </div>
         <div class="rounded bg-light my-1">
             <p class="h2">Degree</p>
-            <p class="h1">88</p>
+            <p class="h1">{{studentHeadCount?.collage}}</p>
         </div>
      </div>
      <!-- bottom tile -->
       <div class="bottom-tile">
         <div class="rounded bg-light">
             <div class="search">
-                <div class="round-border m-2">
+                <!-- <div class="round-border m-2"> -->
                     <!-- search container -->
-                    <app-multi-select></app-multi-select>
+                    <!-- <app-multi-select></app-multi-select> -->
+                    <div class="rounder-border m-2">
+                    <input class="input-border" (keydown.enter)="getAllStudentDataFilter()" placeholder="Search..."  [(ngModel)]="filterData" type="text">
+                  </div>
+                <!-- </div> -->
+            </div>
+            <div class="scroll-box">
+                <div class="list m-1 border-solid ">
+                    @if(studentList.length > 0) {
+                        @for(student of studentList;track student; let i=$index) {
+                            <div  (click)="studentDetailsChart(student)" class="profile-container d-flex pointer">
+                               <div class="profile rounded-circle bg-secondary m-1 ">
+                                  <p class="m-0"  >{{student?.name[0] | uppercase}}{{student?.name[1] | uppercase }}</p>
+                               </div>
+                               <div class="container">
+                                 <div class="row">
+                                     <div  class="col"> <span [matTooltip]="'Name'"  matTooltipClass="custom-tooltip"  matTooltipPosition="above" >{{student?.name | titlecase}}</span> - <span [matTooltip]="'Grade'"  matTooltipClass="custom-tooltip"  matTooltipPosition="above"> {{student?.grade}}</span></div> 
+                                 </div>
+                                 <div class="row">
+                                     <div  class="col">
+                                        @for (skill of student?.skills; track skill; let last = $last) {
+                                           <span [matTooltip]="'Skills'"  matTooltipClass="custom-tooltip"  matTooltipPosition="above">
+                                               {{ skill | titlecase }}@if (!last) {, }
+                                             </span>
+                                           }
+                                     </div>
+                                 </div>
+                               </div>
+                            </div>
+                        }
+                    } @else {
+                        no data found
+                    }
                 </div>
             </div>
-            <div class="list m-1 border-solid scroll-box">
-               <div class="profile-container d-flex">
-                  <div class="profile rounded-circle bg-secondary m-1 ">
-                     <p class="m-0">CR</p>
-                  </div>
-                  <div class="container">
-                    <div class="row">
-                        <div class="col">Name....</div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            Details....
-                        </div>
-                    </div>
-                  </div>
-               </div>
-               <div class="profile-container d-flex">
-                  <div class="profile rounded-circle bg-secondary m-1 ">
-                     <p class="m-0">CR</p>
-                  </div>
-                  <div class="container">
-                    <div class="row">
-                        <div class="col">Name....</div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            Details....
-                        </div>
-                    </div>
-                  </div>
-               </div>
-               <div class="profile-container d-flex">
-                  <div class="profile rounded-circle bg-secondary m-1 ">
-                     <p class="m-0">CR</p>
-                  </div>
-                  <div class="container">
-                    <div class="row">
-                        <div class="col">Name....</div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            Details....
-                        </div>
-                    </div>
-                  </div>
-               </div>
-               
-             
-            </div>
         </div>
-        <div class="rounded bg-light chart-container">
-           <highcharts-chart style="width: 95%; height: 100%;" [Highcharts]="Highcharts" [options]="chartOptions" ></highcharts-chart>
-        </div>
+        <div class="container">
+  <div class="row">
+    <div class="col position-relative rounded bg-light chart-container">
+
+      <!-- Dropdown (top-right corner) -->
+       @if(studentSubject.length > 0) {
+      <div class="dropdown-container">
+        <select (change)="onSubjectChange()" [(ngModel)]="studentSubjectFilter" class="form-select">
+          @for(subject of studentSubject; track subject) {
+            <option [value]="subject">{{subject | titlecase}}</option>
+          }
+        </select>
+      </div>
+    }
+
+      <!-- Chart -->
+       @if(chartOptions) {
+           <highcharts-chart
+       style="width: 100%; height: 100%; display: block;"
+       [Highcharts]="Highcharts"
+       [options]="chartOptions">
+     </highcharts-chart>
+       } @else {
+        No Home assigned 
+       }
+
+    </div>
+  </div>
+</div>
       </div>
     </div>
  </div>
