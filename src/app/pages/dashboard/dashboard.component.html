@@ -11,7 +11,81 @@
                <div class="container">
                    <div class="row">
                       <div class="col-3 d-flex align-item-center justify-content-center">
-                          <img class="my-1 me-1 border border-dark rounded-circle" src="/assets/sidebar/studentmaster.svg" alt="" srcset="">
+                          <!-- <img class="" src="/assets/sidebar/studentmaster.svg" alt="" srcset=""> -->
+                          <div class="logo my-1 me-1 border border-dark rounded-circle">
+      <div class="button__circle">
+        <svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  
+    <defs>
+      <!-- Background Glow -->
+      <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#ff4d6d" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#1e2a47" stop-opacity="1"/>
+      </radialGradient>
+  
+      <!-- Glow -->
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+  
+      <!-- Circle path -->
+      <path id="circlePath"
+        d="M300,300
+           m-250,0
+           a250,250 0 1,1 500,0
+           a250,250 0 1,1 -500,0"/>
+    </defs>
+  
+    <!-- Background -->
+    <rect width="100%" height="100%" fill="url(#bgGlow)" />
+  
+    <!-- STAR (extended top tail) -->
+    <polygon
+      points="
+        300,10
+        360,250
+        520,250
+        380,340
+        430,500
+        300,390
+        170,500
+        220,340
+        80,250
+        240,250
+      "
+      fill="#ff2e2e"
+      stroke="white"
+      stroke-width="4"
+      filter="url(#glow)"
+    />
+  
+    <!-- Center Text -->
+    <text x="300" y="310"
+          text-anchor="middle"
+          font-size="42"
+          font-weight="bold"
+          fill="white"
+          font-family="serif">
+      THARA
+    </text>
+  
+    <!-- TOP DOT (aligned with star tip) -->
+    
+  
+    <!-- Circular Text (perfectly centered start at top) -->
+    <text font-size="24" fill="white" font-family="sans-serif" letter-spacing="4">
+      <textPath href="#circlePath" startOffset="0%" text-anchor="start">
+         TENDER HOME FOR ANAW   IM REST AND AWAKENING
+      </textPath>
+    </text>
+  
+  </svg>
+      </div>
+    </div>
                       </div>
                       <div class="col-9">
                          <small class="d-block">{{userDetails?.name | titlecase}}</small>

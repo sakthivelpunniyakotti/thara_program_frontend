@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { MainboardModalComponent } from '../../shared/reusableComponens/modal/mainboard-modal/mainboard-modal.component';
-import { MODALCSS, TOAST_TYPES } from '../../shared/reusableComponens/enums/toastType';
+import { MODALCSS, motivationalMessages, TOAST_TYPES } from '../../shared/reusableComponens/enums/toastType';
 import { initialState } from '../../shared/reusableComponens/enums/toastType';
 import { CommonService } from '../../core/service/common.service';
 import { LoaderService } from '../../core/service/loader.service';
@@ -297,13 +297,29 @@ submitTest(): void {
     return;
   } else {
   if(this.actualCount >= this.setCount) {
-    const msg ='Your task is completed!, Proceed to the next task.';
+    // const msg ='Your task is completed!, Proceed to the next task.';
+    const msg = this.getMotivationalMessage()
    this.warning(msg,'Task Completed','success')
   }else {
     const msg ='your actual count is not equal to the set count';
      this.warning(msg,'Warning','warning');
   }
   }
+}
+
+
+
+lastIndex = -1;
+
+getMotivationalMessage() {
+  let randomIndex;
+
+  do {
+    randomIndex = Math.floor(Math.random() * motivationalMessages.length);
+  } while (randomIndex === this.lastIndex);
+
+  this.lastIndex = randomIndex;
+  return motivationalMessages[randomIndex];
 }
 
 ngOnDestroy() {

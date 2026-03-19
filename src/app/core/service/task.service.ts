@@ -80,12 +80,21 @@ export class TaskService {
     })
   );
 }
+  getFilteredTaskListPost(payload: any): Observable<any> {
+
+  return this.http.post(`${this.baseUrl}/task/filter`, payload).pipe(
+    catchError((error) => {
+      console.error('Error while fetching filtered task master list', error);
+      return throwError(() => error.error);
+    })
+  );
+}
 
 //global search
-searchTask(searchKey: string): Observable<any> {
+searchTask(payload: any): Observable<any> {
     const url = `${this.baseUrl}/task/search`;
 
-    return this.http.post(url, { searchKey }).pipe(
+    return this.http.post(url,payload).pipe(
       catchError((error) => {
         console.error('Error while searching taks', error);
         return throwError(() => error);

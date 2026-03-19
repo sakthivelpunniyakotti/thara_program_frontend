@@ -88,7 +88,12 @@ getSubject() {
 
 search(): void {
   this.loaderService.show();
-  this.taskService.searchTask(this.taskSearch)
+  const payload = {
+    searchkey : this.taskSearch,
+    page: this.page,
+    limit : this.limit
+  }
+  this.taskService.searchTask(payload)
   .subscribe({
     next: (res: any) => {
       if(res?.statusCode == '200') {
@@ -104,17 +109,41 @@ search(): void {
   })
 }
 
+  back() {
+    this.page--;
+    this.getTaskTableData();
+  
+}
+
+forward() {
+  this.page++;
+  this.getTaskTableData()
+}
+
+limit: number= 8;
+  page: number = 1;
   subjectFilter= '';
   gradeFilter='';
   taskTableData:any;
+  totalPage: any
+  pageMultiple: number = 1;
   getTaskTableData() {
     this.loaderService.show();
 
-    this.taskService.getFilteredTaskList(this.subjectFilter,this.gradeFilter)
+    const payload = {
+  "subject": this.subjectFilter,
+  "grade": this.gradeFilter,
+  "page":  (this.page<=0)?1:this.page,
+  "limit": this.limit
+}
+
+    this.taskService.getFilteredTaskListPost(payload)
     .subscribe({
       next: (res: any) => {
           if(res?.statusCode == '200' ) {
             this.taskTableData = res?.responseBody;
+            this.pageMultiple = res?.pagination?.currentPage;
+       this.totalPage = res?.pagination?.totalPages;
           }
           this.loaderService.hide();
       },

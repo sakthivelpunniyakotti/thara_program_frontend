@@ -10,16 +10,40 @@
 
 </div>
 }@else if(popUpType== 'success') {
-    <div class="container bg-dark rounded border border-light p-1">
+    <div class="container bg-dark rounded border border-light p-3 shadow">
 
-<div class="modal-body text-center text-light">
-  {{msg}}
-</div>
+  <!-- 🔥 Icon / Badge -->
+  <div class="text-center mb-2">
+    <div class="fs-2">🏆</div>
+    <div class="fw-bold text-warning">Task Completed!</div>
+  </div>
 
-<div class="modal-footer d-flex align-item-center justify-content-around text-light">
-   <button class="btn btn-outline-light" (click)="proceed()">Proceed</button>
-  <button class="btn btn-outline-light" (click)="retry()">Retry</button>
-</div>
+  <!-- 💬 Message -->
+  <div class="modal-body text-center text-light fs-5">
+    {{msg}}
+  </div>
+
+  <!-- 📊 Progress bar (visual motivation) -->
+  <div class="px-3 mb-3">
+    <div class="progress" style="height: 6px;">
+      <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+           style="width: 100%;">
+      </div>
+    </div>
+  </div>
+
+  <!-- ⚡ Action buttons -->
+  <div class="modal-footer d-flex align-items-center justify-content-around text-light border-0">
+
+    <button class="btn btn-outline-success px-4 fw-bold" (click)="proceed()">
+      🚀 Proceed
+    </button>
+
+    <button class="btn btn-outline-warning px-4 fw-bold" (click)="retry()">
+      🔁 Retry
+    </button>
+
+  </div>
 
 </div>
 } @else if(popUpType== 'timesUp') {

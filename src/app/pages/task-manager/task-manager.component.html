@@ -69,6 +69,13 @@
                         No data found
                     }
                 </div>
+                <div class="row m-1">
+            <div class="col d-flex align-item-center justify-content-end">
+                <button class="btn btn-light" (click)="back()" [ngClass]="{'disabled':pageMultiple<=1}" [disabled]="pageMultiple<=1" ><img src="/assets/icons/caret-left.svg" alt=""></button>
+                 <button class="btn bg-light m-1">{{pageMultiple}}</button>
+                 <button class="btn btn-light" (click)="forward()" [disabled] = 'totalPage == pageMultiple' ><img src="/assets/icons/caret-right.svg" alt=""></button>
+            </div>
+         </div>
             </div>
         </div> 
       </div>
