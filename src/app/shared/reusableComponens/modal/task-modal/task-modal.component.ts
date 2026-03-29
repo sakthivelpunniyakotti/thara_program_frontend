@@ -8,6 +8,8 @@ import { TaskService } from '../../../../core/service/task.service';
 import { TOAST_TYPES } from '../../enums/toastType';
 import { Subject } from 'rxjs';
 import * as XLSX from 'xlsx';
+ import { from, EMPTY } from 'rxjs';
+import { concatMap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-task-modal',
@@ -137,11 +139,78 @@ export class TaskModalComponent implements OnInit{
       error: (error: any) => {
         console.log(error);
         this.loaderService.hide();
-        this.commonService.show('Failed create task',TOAST_TYPES.ERROR);
+        this.commonService.show('Task creation failed',TOAST_TYPES.ERROR);
         this.hide();
       }
     })
   }
+
+ 
+
+callSaveforFileUpload() {
+
+  if (!this.checkForDefaulter()) {
+    this.commonService.show(`Defaulter is missing`, TOAST_TYPES.ERROR);
+    this.hide();
+    return;
+  }
+
+  from(this.wordsList)
+    .pipe(
+      concatMap((item: any, index: number) => {
+
+        // set form values
+        this.loaderService.show();
+        this.taskForm.patchValue({
+          word: item.word,
+          meaning: item.meaning
+        });
+
+        const payload = {
+      grade: this.taskForm.get('grade')?.value,
+      subject: this.taskForm.get('subject')?.value,
+      meaning: this.taskForm.get('meaning')?.value.trim(),
+      count: this.taskForm.get('count')?.value,
+      timer: this.taskForm.get('timer')?.value,
+      word: this.taskForm.get('word')?.value.trim(),
+      createdBy: this.userDetails?.name
+    }
+
+        // return API observable
+        return this.taskService.postTaskData(payload).pipe(
+          catchError(err => {
+            console.error(`Error at index ${index}`, err);
+            this.commonService.show('Task creation failed',TOAST_TYPES.ERROR);
+            // 🔥 Option 1: skip error and continue
+            return EMPTY;
+
+            // 🔥 Option 2 (stop completely):
+            // throw err;
+          })
+        );
+      })
+    )
+    .subscribe({
+      next: (res) => {
+        console.log('Saved:', res);
+        this.loaderService.hide();
+        this.hide()
+        this.commonService.show('Task created',TOAST_TYPES.SUCCESS);
+      },
+      error: (err) => {
+        console.error('Stopped due to error:', err);
+        this.loaderService.hide();
+        this.hide()
+        this.commonService.show('Failed create task',TOAST_TYPES.ERROR);
+      },
+      complete: () => {
+        console.log('All records processed');
+        this.loaderService.hide()
+        this.hide()
+        // this.commonService.show('Upload completed', TOAST_TYPES.SUCCESS);
+      }
+    });
+}
 
 onClose: Subject<any> = new Subject();
 
@@ -287,20 +356,21 @@ checkForDefaulter() {
     )?true:false;
 }
 
-callSaveforFileUpload() {
+// old one
+// callSaveforFileUpload() {
 
-if(this.checkForDefaulter()) {
+// if(this.checkForDefaulter()) {
 
-  for(let i=0; i<this.wordsList.length ; i++ ) {
-    this.taskForm.get('word')?.setValue(this.wordsList[i]?.word);
-    this.taskForm.get('meaning')?.setValue(this.wordsList[i]?.meaning);
-    this.save();
-  }
-} else {
-  this.commonService.show(`Defaulter is missing`,TOAST_TYPES.ERROR);
-  this.hide()
-}
-}
+//   for(let i=0; i<this.wordsList.length ; i++ ) {
+//     this.taskForm.get('word')?.setValue(this.wordsList[i]?.word);
+//     this.taskForm.get('meaning')?.setValue(this.wordsList[i]?.meaning);
+//     this.save();
+//   }
+// } else {
+//   this.commonService.show(`Defaulter is missing`,TOAST_TYPES.ERROR);
+//   this.hide()
+// }
+// }
 
 
 showFormatError() {
