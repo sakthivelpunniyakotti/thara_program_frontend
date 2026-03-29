@@ -27,7 +27,11 @@
                   <div class="rounder-border m-2 w-20">
                     <input class="input-border" (keydown.enter)="search()" [(ngModel)]="taskSearch" placeholder="Search..." type="text">
                   </div>
-                    <!-- Defaulter -->
+                    <!-- Excel upload -->
+                  <div class="rounder-border m-2 w-20">
+                    <input  (change)="uploadExcel($event)" type="file" name="" id="">
+                  </div>
+                  <!-- Defaulter -->
                   <div class="rounder-border m-2 w-20 d-flex align-item-center justify-content-end">
                     <button class="btn btn-outline-dark" (click)="openDefaulter()">Defaulter</button>
                   </div>

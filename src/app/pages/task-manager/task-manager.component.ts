@@ -229,6 +229,10 @@ limit: number= 8;
 
   }
 
+  uploadExcel(event: any) {
+    console.log(event,'event')
+  }
+
   deleteTask(data: any) {
     this.loaderService.show();
 
