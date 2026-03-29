@@ -7,6 +7,7 @@ import { LoaderService } from '../../../../core/service/loader.service';
 import { TaskService } from '../../../../core/service/task.service';
 import { TOAST_TYPES } from '../../enums/toastType';
 import { Subject } from 'rxjs';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-task-modal',
@@ -23,7 +24,8 @@ export class TaskModalComponent implements OnInit{
   popUpType: string = '';
   data: any;
 
-  taskForm!:FormGroup
+  taskForm!:FormGroup;
+  defaulterData: any;
 
   constructor(
     private modelRef: BsModalRef,
@@ -59,8 +61,10 @@ export class TaskModalComponent implements OnInit{
       }
 
       const defaulter = localStorage.getItem('defaulter');
+      
       if(defaulter && this.popUpType !== 'edit') {
         const defaultJson = JSON.parse(defaulter);
+        this.defaulterData = defaultJson;
         this.taskForm.patchValue({
           subject: defaultJson?.subject,
           grade: defaultJson?.grade,
@@ -107,6 +111,8 @@ export class TaskModalComponent implements OnInit{
   hide() {
     this.modelRef.hide();
   }
+
+
 
   save() {
     this.loaderService.show();
@@ -179,4 +185,130 @@ onClose: Subject<any> = new Subject();
   delete(): void {
     this.closeModal('Y');
   }
+
+wordsList: any[] = [];
+
+uploadExcel(event: any) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = (e: any) => {
+    try {
+      const binaryStr = e.target.result;
+
+      // Read workbook
+      const workbook = XLSX.read(binaryStr, { type: 'binary' });
+
+      // Get first sheet
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+
+      // Convert to JSON
+      const data: any[] = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+
+      console.log('Full Data:', data);
+
+      // ❌ Empty file check
+      if (!data || data.length === 0) {
+        this.showFormatError();
+        return;
+      }
+
+      // ✅ Validate headers
+      const headers = Object.keys(data[0]).map(h => h.trim().toLowerCase());
+      const requiredHeaders = ['serial no', 'words', 'meaning'];
+
+      const isValidTemplate = requiredHeaders.every(h => headers.includes(h));
+
+      if (!isValidTemplate) {
+        this.showFormatError();
+        return;
+      }
+
+      // ✅ Extract data
+      const extractedData = data
+        .map((row, index) => {
+          const wordKey = Object.keys(row).find(
+            k => k.toLowerCase() === 'words'
+          );
+          const meaningKey = Object.keys(row).find(
+            k => k.toLowerCase() === 'meaning'
+          );
+
+          const word = row[wordKey!]?.toString().trim();
+          let meaning = row[meaningKey!]?.toString().trim();
+
+          // ❌ Skip if word is empty
+          if (!word) {
+            console.warn(`Skipping empty word at row ${index + 2}`);
+            return null;
+          }
+
+          // ✅ Fallback: meaning = word
+          if (!meaning) {
+            meaning = word;
+          }
+
+          return {
+            word,
+            meaning
+          };
+        })
+        .filter(Boolean);
+
+      // ❌ No valid rows
+      if (extractedData.length === 0) {
+        this.showFormatError();
+        return;
+      }
+
+      console.log('Extracted Data:', extractedData);
+
+      // ✅ Final assignment
+      this.wordsList = extractedData;
+      this.callSaveforFileUpload();
+
+    } catch (error) {
+      console.error('Excel parsing error:', error);
+      this.showFormatError();
+    }
+  };
+
+  reader.readAsBinaryString(file);
+}
+
+checkForDefaulter() {
+    return (this.defaulterData?.subject && 
+            this.defaulterData?.grade &&
+            this.defaulterData?.count && 
+            this.defaulterData?.timer       
+    )?true:false;
+}
+
+callSaveforFileUpload() {
+
+if(this.checkForDefaulter()) {
+
+  for(let i=0; i<this.wordsList.length ; i++ ) {
+    this.taskForm.get('word')?.setValue(this.wordsList[i]?.word);
+    this.taskForm.get('meaning')?.setValue(this.wordsList[i]?.meaning);
+    this.save();
+  }
+} else {
+  this.commonService.show(`Defaulter is missing`,TOAST_TYPES.ERROR);
+  this.hide()
+}
+}
+
+
+showFormatError() {
+  this.commonService.show(
+    `Invalid Excel format. Please use the correct template.`,
+    TOAST_TYPES.ERROR
+  );
+  this.hide();
+}
+
 }

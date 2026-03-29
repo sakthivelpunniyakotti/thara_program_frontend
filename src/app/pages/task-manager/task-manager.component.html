@@ -8,8 +8,12 @@
             <div class="col">
                 <div class="header-tile bg-light border border-dark rounded d-flex align-item-center justify-content-between mt-3">
                     <p class="h1 m-1">Task</p>
-                    <button class="btn btn-outline-dark m-2" (click)="addTask()">New</button>
-                </div>
+                    <div>
+
+                        <button class="btn btn-outline-dark m-2" (click)="downloadTemplate()">Template</button>
+                        <button class="btn btn-outline-dark m-2" (click)="addTask()">New</button>
+                    </div>
+                    </div>
             </div>
         </div>
         <div class="row mb-1">
@@ -27,10 +31,7 @@
                   <div class="rounder-border m-2 w-20">
                     <input class="input-border" (keydown.enter)="search()" [(ngModel)]="taskSearch" placeholder="Search..." type="text">
                   </div>
-                    <!-- Excel upload -->
-                  <div class="rounder-border m-2 w-20">
-                    <input  (change)="uploadExcel($event)" type="file" name="" id="">
-                  </div>
+                 
                   <!-- Defaulter -->
                   <div class="rounder-border m-2 w-20 d-flex align-item-center justify-content-end">
                     <button class="btn btn-outline-dark" (click)="openDefaulter()">Defaulter</button>

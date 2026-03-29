@@ -10,6 +10,8 @@ import { LoaderService } from '../../core/service/loader.service';
 import { CommonService } from '../../core/service/common.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import * as XLSX from 'xlsx';
+
 
 @Component({
   selector: 'app-task-manager',
@@ -229,9 +231,30 @@ limit: number= 8;
 
   }
 
-  uploadExcel(event: any) {
-    console.log(event,'event')
-  }
+
+
+downloadTemplate() {
+  // Define header row
+  const data = [
+    {
+      'Serial No': 1,
+      'Words': 'example',
+      'Meaning': 'sample'
+    }
+  ];
+
+  // Create worksheet
+  const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+
+  // Create workbook
+  const workbook: XLSX.WorkBook = {
+    Sheets: { 'Template': worksheet },
+    SheetNames: ['Template']
+  };
+
+  // Export file
+  XLSX.writeFile(workbook, 'Words_Template.xlsx');
+}
 
   deleteTask(data: any) {
     this.loaderService.show();

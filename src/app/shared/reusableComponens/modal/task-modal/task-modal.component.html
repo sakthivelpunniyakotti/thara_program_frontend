@@ -48,6 +48,16 @@
                     <textarea placeholder="Meaning..." class="form-control" formControlName="meaning"  cols="30" rows="3"></textarea>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                       <!-- Excel upload -->
+                  <div class=" rounder-border m-2 w-20">
+                    <input 
+                      accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                     (change)="uploadExcel($event)" type="file" name="" id="">
+                  </div>
+                </div>
+            </div>
         </div>
     </form>
 </div>
